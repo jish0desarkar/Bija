@@ -7,14 +7,23 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            style="@style/ToolbarStyle">
+            style="@style/ToolbarStyle"
+            android:background="@color/toolbarColor">
 
             <ImageButton
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:paddingStart="@dimen/ic_nav_padding_start"
                 android:src="@drawable/back" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bija Training"
+                android:textSize="20dp"
+                android:layout_marginStart="28dp"
+                android:textStyle="bold"
+                android:textColor="@color/titleColor"/>
         </android.support.v7.widget.Toolbar>
 
         <RelativeLayout
