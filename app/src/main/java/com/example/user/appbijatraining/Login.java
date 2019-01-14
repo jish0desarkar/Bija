@@ -13,7 +13,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
-    private static final String LOGIN_URL = "http://bijatraining.epizy.com/login.php";
+    private static final String LOGIN_URL = "http://bijatraining.000webhostapp.com/login.php";
     private EditText editTextusername;
     private EditText editTextPassword;
 
@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                     Intent intent = new Intent(Login.this,HomeActivity.class);
                     startActivity(intent);
                 }else{
-                    Toast.makeText(Login.this,"Not OK",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this,"Wrong Password or Username",Toast.LENGTH_LONG).show();
                     System.err.println("HELLO");
                 }
             }
