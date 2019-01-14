@@ -13,7 +13,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
-    private static final String LOGIN_URL = "http://rahulkrishnan221.esy.es/signin.php";
+    private static final String LOGIN_URL = "http://bijatraining.epizy.com/login.php";
     private EditText editTextusername;
     private EditText editTextPassword;
 
