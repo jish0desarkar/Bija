@@ -1,14 +1,13 @@
 package com.example.user.appbijatraining;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.widget.Toast;
 
-public class HomeActivity extends AppCompatActivity {
+public class ProgrammeActivity extends AppCompatActivity {
+
 
     Toolbar toolbar;
 
@@ -18,22 +17,16 @@ public class HomeActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_bar, menu);
         return true;
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        initToolBar();
-
-
-    }
-
     public void initToolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bija Training");
 
         setSupportActionBar(toolbar);
+    }
 
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_programme);
     }
 }

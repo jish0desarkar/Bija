@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/programme_menu"
+        android:title="Programmes"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/appt_menu"
+        android:title="Appointments"
+        app:showAsAction="never"/>
+    <item android:title="Follow Ups"
+        android:id="@+id/follow_menu"
+        app:showAsAction="never"/>
+    <item android:title="History"
+          android:id="@+id/history_menu"
+        app:showAsAction="never"
+        />
+</menu>
