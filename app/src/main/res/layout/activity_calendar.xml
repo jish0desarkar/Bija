@@ -4,28 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    tools:context=".CalendarActivity">
 
-
-    <LinearLayout
+    <com.applandeo.materialcalendarview.CalendarView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:id="@+id/calendar_view"
+        app:headerColor="@color/orange">
 
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:id="@+id/toolbar"
-            android:background="@color/toolbarColor">
-
-        </android.support.v7.widget.Toolbar>
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
-    </LinearLayout>
-
-
+    </com.applandeo.materialcalendarview.CalendarView>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -33,6 +20,5 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_nav"
         app:menu="@menu/activity_nav_drawer" />
-
 
 </android.support.v4.widget.DrawerLayout>
