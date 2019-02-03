@@ -6,17 +6,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        tools:replace="android:label"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Bija"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".CalendarActivity"></activity>
-        <activity android:name=".AppointmentsActivity" />
-        <activity android:name=".FollowupActivity" />
-        <activity android:name=".ProgrammeActivity" />
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
+        <activity android:name=".CalendarActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -4,49 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:id="@+id/drawer_layout">
+
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    </FrameLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:id="@+id/toolbar"
-            android:background="@color/toolbarColor">
-
-        </android.support.v7.widget.Toolbar>
+        android:orientation="vertical"
+        android:paddingTop="60dp"
+        android:id="@+id/fragment_container">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Programmes"
-            android:textStyle="bold"
             android:layout_gravity="fill_vertical"
             android:textSize="25sp"/>
 
         <ListView
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_gravity="fill_vertical" />
+            android:layout_gravity="fill_vertical"
+            android:id="@+id/list1"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Appointments"
             android:layout_gravity="fill_vertical"
-            android:textStyle="bold"
             android:textSize="25sp"/>
 
         <ListView android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_gravity="fill_vertical"/>
+            android:paddingBottom="5dp"
+            android:paddingTop="10dp"
+            android:layout_gravity="fill_vertical"
+            android:id="@+id/list2"/>
+
     </LinearLayout>
+
 
 
     <android.support.design.widget.NavigationView
@@ -55,7 +71,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_nav"
-        app:menu="@menu/activity_nav_drawer" />
+        app:menu="@menu/activity_nav_drawer_trainer" />
 
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,49 +1,93 @@
 package com.example.user.appbijatraining;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class TrainerActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TrainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    ListView listView1, listView2;
+
 
     @Override
-    public boolean onCreatePanelMenu(int featureId, Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_bar_trainer, menu);
-        return true;
-    }
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-
-            case R.id.programme_menu:
-                Intent intent1 = new Intent(TrainerActivity.this, ProgrammeActivity.class);
-                startActivity(intent1);
-                Toast.makeText(this, "Selected", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.appt_menu:
-                Intent intent2 = new Intent(TrainerActivity.this, AppointmentsActivity.class);
-                startActivity(intent2);
-                return true;
-            case R.id.follow_menu:
-                Intent intent3 = new Intent(TrainerActivity.this, FollowupActivity.class);
-                startActivity(intent3);
-                return true;
-            case R.id.calendar_menu:
-                Intent intent4 = new Intent(TrainerActivity.this, CalendarActivity.class);
-                startActivity(intent4);
-                return true;
+        switch (menuItem.getItemId()){
+            case R.id.notification_nav_bt:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new NotificationsFragment())
+                        .addToBackStack( "tag" ).commit();
+                break;
+            case R.id.send_nav_bt:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SendFragment())
+                        .addToBackStack( "tag" ).commit();
+                break;
+            case R.id.profile_nav_bt:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ProfileFragment())
+                        .addToBackStack( "tag" ).commit();
+                break;
+            case R.id.appt_nav_bt:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AppointmentsFragment())
+                        .addToBackStack( "tag" ).commit();
+                break;
+            case R.id.prog_nav_btn:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ProgrammeFragment())
+                        .addToBackStack( "tag" ).commit();
+                break;
+            case R.id.history_nav_btn:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HistoryFragment())
+                        .addToBackStack( "tag" ).commit();
+                break;
+            case R.id.flwup_nav_btn:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FollowUpsFragment())
+                        .addToBackStack( "tag" ).commit();
+                break;
+            case R.id.settings_nav_btn:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment())
+                        .addToBackStack( "tag" ).commit();
+                break;
+                case R.id.calendar_nav_btn:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CalendarFragment())
+                            .addToBackStack( "tag" ).commit();
+                    //Intent intent = new Intent(TrainerActivity.this, CalendarActivity.class);
+                   // startActivity(intent);
+                    break;
+            case R.id.signout_nav_bt:
+                Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.passChange_nav_bt:
+                Toast.makeText(this, "Password Changed", Toast.LENGTH_SHORT).show();
+                break;
         }
 
-        return super.onOptionsItemSelected(item);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+
+    }
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else{
+        super.onBackPressed();}
     }
 
     @Override
@@ -51,6 +95,26 @@ public class TrainerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer);
         initToolBar();
+        listView1 = findViewById(R.id.list1);
+        listView2 = findViewById(R.id.list2);
+        List <String> list = new ArrayList<>();
+        list.add("dummy1");
+        list.add("dummy2");
+        list.add("dummy3");
+        list.add("dummy4");
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, list);
+        listView1.setAdapter(arrayAdapter);
+        listView2.setAdapter(arrayAdapter);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.Nav_open,R.string.nav_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     public void initToolBar() {
@@ -58,7 +122,6 @@ public class TrainerActivity extends AppCompatActivity {
         toolbar.setTitle("Bija Training");
 
         setSupportActionBar(toolbar);
-
 
     }
 }

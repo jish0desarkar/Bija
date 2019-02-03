@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/notification"
+            android:title="Notifications"
+            android:id="@+id/notification_nav_bt"/>
+        <item
+            android:icon="@drawable/upload"
+            android:title="Send"
+            android:id="@+id/send_nav_bt"/>
+        <item
+            android:icon="@drawable/avatar"
+            android:title="Profile"
+            android:id="@+id/profile_nav_bt"/>
+
+    </group>
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu_middle">
+        <item
+            android:icon="@drawable/logout"
+            android:title="Appointments"
+            android:id="@+id/appt_nav_bt"/>
+        <item
+            android:icon="@drawable/key"
+            android:title="Follow ups"
+            android:id="@+id/flwup_nav_btn"/>
+        <item
+            android:icon="@drawable/key"
+            android:title="Programme"
+            android:id="@+id/prog_nav_btn"/>
+        <item
+            android:icon="@drawable/key"
+            android:title="History"
+            android:id="@+id/history_nav_btn"/>
+        <item
+            android:icon="@drawable/key"
+            android:title="Calendar"
+            android:id="@+id/calendar_nav_btn"/>
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu_bottom">
+        <item
+            android:icon="@drawable/logout"
+            android:title="Sign Out"
+            android:id="@+id/signout_nav_bt"/>
+        <item
+            android:icon="@drawable/key"
+            android:title="Change Password"
+            android:id="@+id/passChange_nav_bt"/>
+        <item
+            android:icon="@android:color/background_dark"
+            android:title="Settings"
+            android:id="@+id/settings_nav_btn"/>
+    </group>
+
+
+</menu>

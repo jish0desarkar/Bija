@@ -10,7 +10,8 @@
     <string name="login_welcome_txt">Hello there !\nWelcome Back</string>
     <string name="signup_welcome_txt">Hello there !\nWelcome to you</string>
     <string name="toolbarTitle">Bija Training</string>
-
+    <string name="Nav_open">nav open</string>
+    <string name="nav_close">nav close</string>
 
     <!--Button labels-->
     <string name="login_btn_label">Login</string>
