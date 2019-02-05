@@ -6,8 +6,12 @@
     <group android:checkableBehavior="single">
         <item
             android:icon="@drawable/notification"
+            android:title="Home"
+            android:id="@+id/home_nav_bt" />
+        <item
+            android:icon="@drawable/notification"
             android:title="Notifications"
-            android:id="@+id/notification_nav_bt"/>
+            android:id="@+id/notification_nav_bt" />
         <item
             android:icon="@drawable/upload"
             android:title="Send"
