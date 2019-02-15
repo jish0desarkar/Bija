@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/notification_listText"
+        android:layout_width="360dp"
+        android:layout_height="119dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.414" />
+
+    <Button
+        android:id="@+id/notification_delete"
+        android:layout_width="108dp"
+        android:layout_height="59dp"
+        android:text="DELETE"
+        android:shadowColor="@color/colorPrimary"
+        android:backgroundTint="@color/orange"
+        app:layout_constraintBottom_toBottomOf="@+id/notification_listText"
+        app:layout_constraintEnd_toEndOf="@+id/notification_listText"
+        app:layout_constraintHorizontal_bias="0.96"
+        app:layout_constraintStart_toStartOf="@+id/notification_listText"
+        app:layout_constraintTop_toTopOf="@+id/notification_listText"
+        app:layout_constraintVertical_bias="0.507" />
+</android.support.constraint.ConstraintLayout>
