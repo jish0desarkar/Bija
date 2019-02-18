@@ -32,52 +32,66 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
             case R.id.home_nav_bt:
                 Intent intent = new Intent(TrainerActivity.this, TrainerActivity.class);
                 startActivity(intent);
+                navigationView.setCheckedItem(R.id.home_nav_bt);
                 finish();
                 Log.v("home", "home is clicked");
+                break;
             case R.id.notification_nav_bt:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationsFragment())
-                        .addToBackStack(null).commit();
+                Intent intent1 = new Intent(getApplicationContext(), NotificationsActivity.class);
+                startActivity(intent1);
+
                 break;
             case R.id.send_nav_bt:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SendFragment())
                         .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.send_nav_bt);
                 break;
             case R.id.profile_nav_bt:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment())
                         .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.profile_nav_bt);
                 break;
             case R.id.appt_nav_bt:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AppointmentsFragment())
                         .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.appt_nav_bt);
                 break;
             case R.id.prog_nav_btn:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProgrammeFragment())
                         .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.prog_nav_btn);
                 break;
             case R.id.history_nav_btn:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HistoryFragment())
                         .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.history_nav_btn);
                 break;
             case R.id.flwup_nav_btn:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FollowUpsFragment())
                         .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.flwup_nav_btn);
                 break;
             case R.id.settings_nav_btn:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment())
                         .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.settings_nav_btn);
                 break;
             case R.id.calendar_nav_btn:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment())
                         .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.calendar_nav_btn);
                 //Intent intent = new Intent(TrainerActivity.this, CalendarActivity.class);
                 // startActivity(intent);
                 break;
             case R.id.signout_nav_bt:
                 Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show();
+                navigationView.setCheckedItem(R.id.signout_nav_bt);
                 break;
             case R.id.passChange_nav_bt:
-                Toast.makeText(this, "Password Changed", Toast.LENGTH_SHORT).show();
-                break;
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ChangePassFragment())
+                        .addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.passChange_nav_bt);
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -87,6 +101,8 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -105,6 +121,7 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
         initToolBar();
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.home_nav_bt);
         /*List<String> list = new ArrayList<>();
         list.add("dummy1");
         list.add("dummy2");
