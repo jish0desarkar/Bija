@@ -1,7 +1,10 @@
 package com.example.user.appbijatraining;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -19,9 +22,22 @@ public class AppointmentListAdapter extends ArrayAdapter {
 
 
     Context context;
+    String text;
     int resource;
     List<AppointmentList> appoitmentLists;
+    Dialog dialog;
 
+
+
+         public AppointmentListAdapter(Context context, int resource, List<AppointmentList> appoitmentLists) {
+            super(context, resource, appoitmentLists);
+            this.context = context;
+            this.resource = resource;
+            this.appoitmentLists = appoitmentLists;
+
+
+
+    }
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -35,7 +51,35 @@ public class AppointmentListAdapter extends ArrayAdapter {
         detailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String text = "Details about this event";
+                Intent intent = new Intent(getContext(), PopUpActivity.class);
+                Bundle bundle =  new Bundle();
+                bundle.putString("Text", text);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
 
+            }
+        });
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = "History of this event";
+                Intent intent = new Intent(getContext(), PopUpActivity.class);
+                Bundle bundle =  new Bundle();
+                bundle.putString("Text", text);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+        statusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = "Status of this event";
+                Intent intent = new Intent(getContext(), PopUpActivity.class);
+                Bundle bundle =  new Bundle();
+                bundle.putString("Text", text);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
 
@@ -44,15 +88,6 @@ public class AppointmentListAdapter extends ArrayAdapter {
 
 
         return view;
-    }
-
-         public AppointmentListAdapter(Context context, int resource, List<AppointmentList> appoitmentLists) {
-            super(context, resource, appoitmentLists);
-            this.context = context;
-            this.resource = resource;
-            this.appoitmentLists = appoitmentLists;
-
-
     }
 
 }
