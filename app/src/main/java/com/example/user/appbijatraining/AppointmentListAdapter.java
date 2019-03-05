@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.example.user.appbijatraining.NotificationsActivity.notificationLists;
-
 public class AppointmentListAdapter extends ArrayAdapter {
 
 
@@ -44,7 +42,7 @@ public class AppointmentListAdapter extends ArrayAdapter {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         @SuppressLint("ViewHolder") View view = inflater.inflate(R.layout.custom_appointment_list_item, null);
-        TextView appointmentText = view.findViewById(R.id.appt_text);
+        TextView appointmentText = view.findViewById(R.id.hist_text);
         Button detailsButton = view.findViewById(R.id.Details_button);
         Button historyButton = view.findViewById(R.id.History_button);
         Button statusButton = view.findViewById(R.id.button_status);

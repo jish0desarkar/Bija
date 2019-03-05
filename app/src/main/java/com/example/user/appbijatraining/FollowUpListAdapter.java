@@ -1,6 +1,7 @@
 package com.example.user.appbijatraining;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,28 +16,39 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ProgramListAdapter extends ArrayAdapter {
+public class FollowUpListAdapter extends ArrayAdapter {
 
 
     Context context;
+    String text;
     int resource;
-    List<ProgrammeList> programmeLists;
+    List<FollowUpListy> followUpListies;
+    Dialog dialog;
+
+
+    public FollowUpListAdapter(Context context, int resource, List<FollowUpListy> followUpListies) {
+        super(context, resource, followUpListies);
+        this.context = context;
+        this.resource = resource;
+        this.followUpListies = followUpListies;
+
+
+    }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         LayoutInflater inflater = LayoutInflater.from(context);
-        @SuppressLint("ViewHolder") View view = inflater.inflate(R.layout.custom_programme_listview, null);
-        TextView appointmentText = view.findViewById(R.id.programme_listText);
-        Button detailsButton = view.findViewById(R.id.programme_details_button);
-        Button historyButton = view.findViewById(R.id.programme_history_button);
+        @SuppressLint("ViewHolder") View view = inflater.inflate(R.layout.custom_followups_list_item, null);
+        TextView flwText = view.findViewById(R.id.hist_text);
+        Button detailsButton = view.findViewById(R.id.Details_button);
+        Button historyButton = view.findViewById(R.id.status_btn);
         detailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = "Details about this event";
                 Intent intent = new Intent(getContext(), PopUpActivity.class);
-                Bundle bundle =  new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString("Text", text);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
@@ -48,27 +60,21 @@ public class ProgramListAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 String text = "Details about this event";
                 Intent intent = new Intent(getContext(), PopUpActivity.class);
-                Bundle bundle =  new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString("Text", text);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
 
             }
         });
-        ProgrammeList programmeList = programmeLists.get(position);
-        appointmentText.setText(programmeList.getprogText());
+
+        FollowUpListy followUpListy = followUpListies.get(position);
+        flwText.setText(followUpListy.getFlwText());
 
 
         return view;
     }
-
-         public ProgramListAdapter(Context context, int resource, List<ProgrammeList> programmeLists) {
-            super(context, resource, programmeLists);
-            this.context = context;
-            this.resource = resource;
-            this.programmeLists = programmeLists;
-
-
-    }
-
 }
+
+
+

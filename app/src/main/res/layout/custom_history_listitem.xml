@@ -35,38 +35,10 @@
         android:text="Details"
         app:layout_constraintBottom_toBottomOf="@+id/hist_text"
         app:layout_constraintEnd_toEndOf="@+id/hist_text"
-        app:layout_constraintHorizontal_bias="0.065"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="@+id/hist_text"
         app:layout_constraintTop_toTopOf="@+id/hist_text"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.962" />
 
-    <Button
-        android:id="@+id/History_button"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="108dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/orange"
-        android:shadowColor="@color/colorPrimary"
-        android:text="History"
-        app:layout_constraintBottom_toBottomOf="@+id/hist_text"
-        app:layout_constraintEnd_toEndOf="@+id/hist_text"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/hist_text"
-        app:layout_constraintTop_toTopOf="@+id/hist_text"
-        app:layout_constraintVertical_bias="0.917" />
 
-    <Button
-        android:id="@+id/button_status"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="status"
-        app:layout_constraintBottom_toBottomOf="@+id/hist_text"
-        app:layout_constraintEnd_toEndOf="@+id/hist_text"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="@+id/hist_text"
-        app:layout_constraintTop_toTopOf="@+id/hist_text"
-        app:layout_constraintVertical_bias="0.931" />
 </android.support.constraint.ConstraintLayout>
