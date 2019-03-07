@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
-    private static final String LOGIN_URL = "http://bijatraining.000webhostapp.com/login.php";
+    private static final String LOGIN_URL = "http://bijatraining.000webhostapp.com/test.php";
     private EditText editTextusername;
     private EditText editTextPassword;
 
@@ -63,7 +65,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 super.onPostExecute(s);
                 loading.dismiss();
                 System.err.println(s);
-                if(s.equalsIgnoreCase("success")){
+                if(s.charAt(0)=='[' && s.charAt(1)=='{'){
+                    try {
+                        JSONArray jsonArray = new JSONArray(s);
+                    }
+                    catch (Exception e)
+                    {
+                        System.err.println(e);
+                    }
                     Intent intent = new Intent(Login.this, TrainerActivity.class);
                     startActivity(intent);
                 }else{
