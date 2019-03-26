@@ -1,6 +1,8 @@
 package com.example.user.appbijatraining;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +23,13 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 finish();
+                StaffDetailDbHelper dbHelper=new StaffDetailDbHelper(getApplicationContext());
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                Cursor cursor=db.rawQuery("Select * from staff",null);
+                if (cursor.getCount()==0)
                 startActivity(new Intent(SplashActivity.this,Login.class));
+                else
+                    startActivity(new Intent(SplashActivity.this,TrainerActivity.class));
             }
         }, SPLASH_TIME_OUT);
             }

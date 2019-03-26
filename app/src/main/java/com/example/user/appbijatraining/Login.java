@@ -3,6 +3,7 @@ package com.example.user.appbijatraining;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_loginc);
         editTextusername= (EditText) findViewById(R.id.et_username);
         editTextPassword = (EditText) findViewById(R.id.et_password);
+
         buttonLogin = (Button) findViewById(R.id.btn_login);
 
         buttonLogin.setOnClickListener(this);
@@ -110,6 +112,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                         System.err.println(e);
                     }
                     Intent intent = new Intent(Login.this, TrainerActivity.class);
+                    finish();
                     startActivity(intent);
                 }else{
                     Toast.makeText(Login.this,"Wrong Password or Username",Toast.LENGTH_LONG).show();
