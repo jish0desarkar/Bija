@@ -5,7 +5,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:icon="@drawable/notification"
+            android:icon="@drawable/home"
             android:title="Home"
             android:id="@+id/home_nav_bt" />
         <item
@@ -25,7 +25,7 @@
     <group android:checkableBehavior="single"
         android:id="@+id/menu_middle">
         <item
-            android:icon="@drawable/logout"
+            android:icon="@drawable/appointment"
             android:title="Appointments"
             android:id="@+id/appt_nav_bt"/>
         <item
@@ -33,15 +33,15 @@
             android:title="Follow ups"
             android:id="@+id/flwup_nav_btn"/>
         <item
-            android:icon="@drawable/key"
+            android:icon="@drawable/programme"
             android:title="Programme"
             android:id="@+id/prog_nav_btn"/>
         <item
-            android:icon="@drawable/key"
+            android:icon="@drawable/history"
             android:title="History"
             android:id="@+id/history_nav_btn"/>
         <item
-            android:icon="@drawable/key"
+            android:icon="@drawable/calendar"
             android:title="Calendar"
             android:id="@+id/calendar_nav_btn"/>
     </group>
@@ -57,7 +57,7 @@
             android:title="Change Password"
             android:id="@+id/passChange_nav_bt"/>
         <item
-            android:icon="@android:color/background_dark"
+            android:icon="@drawable/settings"
             android:title="Settings"
             android:id="@+id/settings_nav_btn"/>
     </group>

@@ -10,7 +10,7 @@
     <ListView
         android:id="@+id/flw_listview"
         android:layout_width="388dp"
-        android:layout_height="613dp"
+        android:layout_height="570dp"
         android:layout_marginTop="96dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
