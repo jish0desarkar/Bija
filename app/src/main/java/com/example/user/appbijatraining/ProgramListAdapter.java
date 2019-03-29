@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,41 +23,27 @@ public class ProgramListAdapter extends ArrayAdapter {
     int resource;
     List<ProgrammeList> programmeLists;
 
+    @SuppressLint("ViewHolder")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        @SuppressLint("ViewHolder") View view = inflater.inflate(R.layout.custom_programme_listview, null);
-        TextView appointmentText = view.findViewById(R.id.programme_listText);
-        Button detailsButton = view.findViewById(R.id.programme_details_button);
-        Button historyButton = view.findViewById(R.id.programme_history_button);
-        detailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = "Details about this event";
-                Intent intent = new Intent(getContext(), PopUpActivity.class);
-                Bundle bundle =  new Bundle();
-                bundle.putString("Text", text);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+        View view;
+        view = inflater.inflate(R.layout.custom_programme_listview, null);
+        TextView prg_idText = view.findViewById(R.id.prg_id);
+        TextView titleText = view.findViewById(R.id.title);
 
-            }
-        });
-        historyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = "Details about this event";
-                Intent intent = new Intent(getContext(), PopUpActivity.class);
-                Bundle bundle =  new Bundle();
-                bundle.putString("Text", text);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+        TextView addedByText = view.findViewById(R.id.added_by);
 
-            }
-        });
+        TextView trainerText = view.findViewById(R.id.trainer);
+
+
         ProgrammeList programmeList = programmeLists.get(position);
-        appointmentText.setText(programmeList.getprogText());
+        prg_idText.setText(programmeList.getPrg_id());
+        titleText.setText(programmeList.getTitle());
+        trainerText.setText(programmeList.getTrainer());
+        addedByText.setText(programmeList.getAddedBy());
 
 
         return view;

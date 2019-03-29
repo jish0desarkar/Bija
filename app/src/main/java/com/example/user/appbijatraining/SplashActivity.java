@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
                 Cursor cursor=db.rawQuery("Select * from staff",null);
                 if (cursor.getCount()==0)
-                startActivity(new Intent(SplashActivity.this,Login.class));
+                startActivity(new Intent(SplashActivity.this,TrainerActivity.class));
                 else
                     startActivity(new Intent(SplashActivity.this,TrainerActivity.class));
             }
