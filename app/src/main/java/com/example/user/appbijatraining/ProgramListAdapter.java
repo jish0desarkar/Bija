@@ -31,10 +31,10 @@ public class ProgramListAdapter extends ArrayAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view;
         view = inflater.inflate(R.layout.custom_programme_listview, null);
+        //TextView prg_idText = view.findViewById(R.id.prg_text);
         TextView prg_idText = view.findViewById(R.id.prg_id);
         TextView titleText = view.findViewById(R.id.title);
 
-        TextView addedByText = view.findViewById(R.id.added_by);
 
         TextView trainerText = view.findViewById(R.id.trainer);
 
@@ -43,7 +43,6 @@ public class ProgramListAdapter extends ArrayAdapter {
         prg_idText.setText(programmeList.getPrg_id());
         titleText.setText(programmeList.getTitle());
         trainerText.setText(programmeList.getTrainer());
-        addedByText.setText(programmeList.getAddedBy());
 
 
         return view;

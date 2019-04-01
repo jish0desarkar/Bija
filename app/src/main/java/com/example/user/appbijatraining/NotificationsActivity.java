@@ -1,5 +1,6 @@
 package com.example.user.appbijatraining;
 
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,7 +27,7 @@ import java.util.List;
 public class NotificationsActivity extends AppCompatActivity {
     static List<NotificationList> notificationLists;
     static  ListView listView;
-
+    NavigationView navigationView;
 
 
     /**
@@ -47,6 +48,9 @@ public class NotificationsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.notification_nav_bt);*/
+
         setContentView(R.layout.activity_notifications);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

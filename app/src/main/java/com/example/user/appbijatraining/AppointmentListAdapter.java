@@ -49,7 +49,7 @@ public class AppointmentListAdapter extends ArrayAdapter {
         detailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = "Details about this event";
+                String text = "Date: 2019-04-06 fees: 25000,paid: 25000";
                 Intent intent = new Intent(getContext(), PopUpActivity.class);
                 Bundle bundle =  new Bundle();
                 bundle.putString("Text", text);
@@ -61,7 +61,7 @@ public class AppointmentListAdapter extends ArrayAdapter {
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = "History of this event";
+                String text = "Yet to complete";
                 Intent intent = new Intent(getContext(), PopUpActivity.class);
                 Bundle bundle =  new Bundle();
                 bundle.putString("Text", text);
@@ -72,7 +72,7 @@ public class AppointmentListAdapter extends ArrayAdapter {
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = "Status of this event";
+                String text = "Status: Confirmed";
                 Intent intent = new Intent(getContext(), PopUpActivity.class);
                 Bundle bundle =  new Bundle();
                 bundle.putString("Text", text);

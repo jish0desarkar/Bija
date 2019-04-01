@@ -34,7 +34,7 @@ public class PopUpActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        getWindow().setLayout((int) (displayMetrics.widthPixels * .7), (int) (displayMetrics.heightPixels * .5));
+        getWindow().setLayout((int) (displayMetrics.widthPixels * .8), (int) (displayMetrics.heightPixels * .5));
 
 
     }

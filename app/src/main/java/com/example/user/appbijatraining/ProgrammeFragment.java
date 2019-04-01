@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,17 +46,18 @@ public class ProgrammeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Programme");
 
         HashMap<String, String> hashMap = new HashMap<>();
         PostingClass postingClass = new PostingClass();
         hashMap.put("staff_id", "73");
         hashMap.put("date", "2071-04-09");
 
-        new FetchProgram().execute("73", "2017-04-09");
+       new FetchProgram().execute("73", "2017-04-09");
 
         programmeLists = new ArrayList<>();
 
-        programmeLists.add(new ProgrammeList("dummy", "dummy2", "dummy3", "dummy4"));
 
         /*programmeLists.add(new ProgrammeList(prg_id, title, trainer, addedBy));
         Log.i("Prog id", prg_id);
@@ -77,11 +79,11 @@ public class ProgrammeFragment extends Fragment {
         programmeLists.add(new ProgrammeList("Dummy notification 1"));
 `           */
 
-      /*  listView = getActivity().findViewById(R.id.program_list);
+       listView = getActivity().findViewById(R.id.program_list);
 
         ProgramListAdapter adapter = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
 
-        listView.setAdapter(adapter);*/
+        listView.setAdapter(adapter);
     }
 
     class FetchProgram extends AsyncTask<String, String, String> {

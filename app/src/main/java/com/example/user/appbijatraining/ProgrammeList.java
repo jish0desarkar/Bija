@@ -2,6 +2,7 @@ package com.example.user.appbijatraining;
 
 public class ProgrammeList {
 
+
     String prg_id;
     String title;
     String trainer;

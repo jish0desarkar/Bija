@@ -1,6 +1,7 @@
 package com.example.user.appbijatraining;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static com.example.user.appbijatraining.StaffContract.FeedEntry.TABLE_NAME;
+
 public class TrainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
@@ -22,11 +25,8 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
     ListView listView1, listView2;
     NavigationView navigationView;
     TextView textView1, textView2;
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-
         switch (menuItem.getItemId()) {
 
             case R.id.home_nav_bt:
@@ -85,6 +85,14 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
                 break;
             case R.id.signout_nav_bt:
                 Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show();
+                 final String SQL_DELETE_ENTRIES =
+                        "DROP TABLE IF EXISTS " + TABLE_NAME;
+                StaffDetailDbHelper dbHelper=new StaffDetailDbHelper(getApplicationContext());
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                db.execSQL("delete from "+ TABLE_NAME);
+                finish();
+                Intent intent3 = new Intent(TrainerActivity.this, Login.class);
+                startActivity(intent3);
                 navigationView.setCheckedItem(R.id.signout_nav_bt);
                 break;
             case R.id.passChange_nav_bt:
