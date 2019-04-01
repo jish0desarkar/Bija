@@ -40,7 +40,8 @@ public class ProgramListAdapter extends ArrayAdapter {
 
 
         ProgrammeList programmeList = programmeLists.get(position);
-        prg_idText.setText(programmeList.getPrg_id());
+       String  prgid = programmeList.getPrg_id()+".";
+        prg_idText.setText(prgid);
         titleText.setText(programmeList.getTitle());
         trainerText.setText(programmeList.getTrainer());
 
