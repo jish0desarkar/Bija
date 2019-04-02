@@ -2,6 +2,7 @@ package com.example.user.appbijatraining;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +32,8 @@ public class ProgrammeFragment extends Fragment {
     static ArrayList<ProgrammeList> programmeLists;
     static ListView listView;
     TextView staff_id;
-    String prg_id, title, trainer, addedBy;
+    String prg_id, title, trainer, addedBy, date, remark, status, trainerEmai, trainerDate, fromDate, toDate, companyPerson,
+    finalStatus, approval, fees, paid, due, paidOn, location;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,6 +87,32 @@ public class ProgrammeFragment extends Fragment {
         ProgramListAdapter adapter = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
 
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getContext(), PopUpActivity.class);
+                intent.putExtra("Date", date);
+                intent.putExtra("remark", remark);
+                intent.putExtra("trainer_email", trainerEmai);
+                intent.putExtra("from", fromDate);
+                intent.putExtra("to", toDate);
+                intent.putExtra("person", companyPerson);
+                intent.putExtra("final_status", finalStatus);
+                intent.putExtra("approval", approval);
+                intent.putExtra("status", status);
+                intent.putExtra("fees", fees);
+                intent.putExtra("due", due);
+                intent.putExtra("paid_on", paidOn);
+                intent.putExtra("location", location);
+                intent.putExtra("paid", paid);
+
+                startActivity(intent);
+
+
+            }
+        });
     }
 
     class FetchProgram extends AsyncTask<String, String, String> {
@@ -126,6 +155,21 @@ public class ProgrammeFragment extends Fragment {
                     title = json.getString("title");
                     trainer = json.getString("trainers");
                     addedBy = json.getString("added_by");
+                    date = json.getString("date");
+                    remark = json.getString("remark");
+                    status = json.getString("trainer_cnf");;
+                    trainerEmai = json.getString("trainer_email");
+                    fromDate = json.getString("fromdate");
+                    toDate = json.getString("todate");
+                    companyPerson = json.getString("company_person");
+                    finalStatus = json.getString("final_status");
+                    approval = json.getString("approval");
+                    fees = json.getString("fees");
+                    paid = json.getString("paid");
+                    due = json.getString("due");
+                    location = json.getString("location");
+                    paidOn = json.getString("t_paid_on");
+
 
 
 
