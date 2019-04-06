@@ -52,20 +52,96 @@ public class PopUpActivity extends AppCompatActivity {
         TextView locationText = findViewById(R.id.location);
         TextView dueText = findViewById(R.id.due);
 
-        dateText.setText(date);
-        remarkText.setText(remark);
-        statusText.setText(status);
-        trainerEmailText.setText(trainerEmai);
-        fromText.setText(fromDate);
-        toText.setText(toDate);
-        personText.setText(companyPerson);
-        finalStatusText.setText(finalStatus);
-        approvalText.setText(approval);
-        feesText.setText(fees);
-        paidText.setText(paid);
-        paidOnText.setText(paidOn);
-        dueText.setText(due);
-        locationText.setText(location);
+
+        if(date != null)
+            dateText.setText(date);
+        else
+            dateText.setText("Not provided");
+        if(remark != null)
+            remarkText.setText(remark);
+        else
+            remarkText.setText("Not provided");
+
+
+        if(status != null)
+            statusText.setText(status);
+        else
+            statusText.setText("Not provided");
+
+
+        if(trainerEmai != null)
+            trainerEmailText.setText(trainerEmai);
+        else
+            trainerEmailText.setText("Not provided");
+
+
+        if(fromDate != null)
+             fromText.setText(fromDate);
+
+        else
+            fromText.setText("Not provided");
+
+
+        if(toDate != null)
+            toText.setText(toDate);
+        else
+            toText.setText("Not provided");
+
+
+
+        if(companyPerson != null)
+            personText.setText(companyPerson);
+        else
+            personText.setText("Not provided");
+
+
+
+        if(finalStatus != null)
+            finalStatusText.setText(finalStatus);
+        else
+            finalStatusText.setText("Not provided");
+
+
+        if(approval != null)
+             approvalText.setText(approval);
+        else
+            approvalText.setText("Not provided");
+
+
+
+        if(fees != null)
+            feesText.setText(fees);
+
+        else
+            feesText.setText("Not provided");
+
+        if(paid != null)
+            paidText.setText(paid);
+
+        else
+            paidText.setText("Not provided");
+
+
+        if(paidOn != null)
+            paidOnText.setText(paidOn);
+        else
+            paidOnText.setText("Not provided");
+
+
+
+
+        if(due != null)
+            dueText.setText(due);
+        else
+            dueText.setText("Not provided");
+
+
+
+        if(location != null)
+            locationText.setText(location);
+        else
+            locationText.setText("Not provided");
+
 
 
 

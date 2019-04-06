@@ -10,15 +10,19 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Bija"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:label"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PopUpActivity"
-            android:theme="@style/AppTheme.Popup">
-
-        </activity>
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:label">
+        <activity android:name=".PopUpRemark"
+            android:theme="@style/AppTheme.RemarkPopUp"></activity>
+        <activity
+            android:name=".LongPressPopUpActivity"
+            android:theme="@style/AppTheme.LongPopUp" />
+        <activity
+            android:name=".PopUpActivity"
+            android:theme="@style/AppTheme.Popup"></activity>
         <activity
             android:name=".NotificationsActivity"
             android:label="@string/title_activity_notifications"

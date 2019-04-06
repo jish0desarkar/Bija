@@ -25,28 +25,17 @@ public class AppointmentListAdapter extends ArrayAdapter {
     List<AppointmentList> appoitmentLists;
     Dialog dialog;
 
-
-
-         public AppointmentListAdapter(Context context, int resource, List<AppointmentList> appoitmentLists) {
-            super(context, resource, appoitmentLists);
-            this.context = context;
-            this.resource = resource;
-            this.appoitmentLists = appoitmentLists;
-
-
-
-    }
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         @SuppressLint("ViewHolder") View view = inflater.inflate(R.layout.custom_appointment_list_item, null);
-        TextView appointmentText = view.findViewById(R.id.hist_text);
-        Button detailsButton = view.findViewById(R.id.Details_button);
-        Button historyButton = view.findViewById(R.id.History_button);
-        Button statusButton = view.findViewById(R.id.button_status);
-        detailsButton.setOnClickListener(new View.OnClickListener() {
+        //TextView appointmentText = view.findViewById(R.id.hist_text);
+        //Button detailsButton = view.findViewById(R.id.Details_button);
+        //Button historyButton = view.findViewById(R.id.History_button);
+        //Button statusButton = view.findViewById(R.id.button_status);
+        /*detailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = "Date: 2019-04-06 fees: 25000,paid: 25000";
@@ -79,13 +68,30 @@ public class AppointmentListAdapter extends ArrayAdapter {
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
-        });
+        });*/
+        TextView prg_idText = view.findViewById(R.id.prg_id);
+        TextView titleText = view.findViewById(R.id.title);
+
+
+        TextView trainerText = view.findViewById(R.id.trainer);
+
 
         AppointmentList appointmentList = appoitmentLists.get(position);
-        appointmentText.setText(appointmentList.getApptText());
+        String prgid = appointmentList.getPrg_id() + ".";
+        prg_idText.setText(prgid);
+        titleText.setText(appointmentList.getTitle());
+        trainerText.setText(appointmentList.getTrainer());
 
 
         return view;
     }
 
-}
+    public AppointmentListAdapter(Context context, int resource, List<
+        AppointmentList > appointmentLists){
+            super(context, resource, appointmentLists);
+            this.context = context;
+            this.resource = resource;
+            this.appoitmentLists = appointmentLists;
+        }
+
+    }
