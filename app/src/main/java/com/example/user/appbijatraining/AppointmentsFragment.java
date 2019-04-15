@@ -29,8 +29,26 @@ public class AppointmentsFragment extends Fragment {
     static List<AppointmentList> appointmentLists;
     static ListView listView;
 
-    String prg_id, title, trainer, addedBy, date, remark, status, trainerEmai, trainerDate, fromDate, toDate, companyPerson,
-            finalStatus, approval, fees, paid, due, paidOn, location;
+
+    String[] app_id = new String[30];
+    String[] staff_id = new String[30];
+    String[] company_id = new String[30];
+    String[] call_loop_id = new String[30];
+    String[] date = new String[30];
+    String[] remark = new String[30];
+    String[] fromDate= new String[30];
+    String[] toDate = new String[30];
+    String[] company_person = new String[30];
+    String[]  Post_remark = new String[30];
+    String[] status= new String[30];
+    String[] final_status = new String[30];
+    String[] approval= new String[30];
+    String[] trainer_id = new String[30];
+    String[] trainer_cnf = new String[30];
+    String[] trainers = new String[30];
+    String[] trainer_email = new String[30];
+    String[] addedBy = new String[30];
+    String[] location = new String[30];
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,7 +76,7 @@ public class AppointmentsFragment extends Fragment {
         hashMap.put("staff_id", "73");
         hashMap.put("date", "2071-04-09");
 
-        new FetchProgram().execute("73", "2017-04-09");
+        new FetchProgram().execute("73", "2017-04-12");
 
 
 
@@ -74,20 +92,28 @@ public class AppointmentsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getContext(), PopUpActivity.class);
-                intent.putExtra("Date", date);
-                intent.putExtra("remark", remark);
-                intent.putExtra("trainer_email", trainerEmai);
-                intent.putExtra("from", fromDate);
-                intent.putExtra("to", toDate);
-                intent.putExtra("person", companyPerson);
-                intent.putExtra("final_status", finalStatus);
-                intent.putExtra("approval", approval);
-                intent.putExtra("status", status);
-                intent.putExtra("fees", fees);
-                intent.putExtra("due", due);
-                intent.putExtra("paid_on", paidOn);
-                intent.putExtra("location", location);
-                intent.putExtra("paid", paid);
+                intent.putExtra("intent", "Appt");
+                intent.putExtra("app_id", app_id[position]);
+                intent.putExtra("staff_id", staff_id[position]);
+                intent.putExtra("company_id", company_id[position]);
+                intent.putExtra("call_loop_id", call_loop_id[position]);
+                intent.putExtra("date", date[position]);
+                intent.putExtra("remark", remark[position]);
+                intent.putExtra("fromdate", fromDate[position]);
+                intent.putExtra("todate", toDate[position]);
+                intent.putExtra("company_person", company_person[position]);
+                intent.putExtra("Post_remark", Post_remark[position]);
+                intent.putExtra("status", status[position]);
+                intent.putExtra("final_status", final_status[position]);
+                intent.putExtra("approval", approval[position]);
+                intent.putExtra("trainer_id", trainer_id[position]);
+                intent.putExtra("trainer_cnf", trainer_cnf[position]);
+                intent.putExtra("trainers", trainers);
+                intent.putExtra("trainer_email", trainer_email[position]);
+                intent.putExtra("added_by", addedBy[position]);
+                intent.putExtra("location", location[position]);
+
+
 
                 startActivity(intent);
 
@@ -101,20 +127,26 @@ public class AppointmentsFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), LongPressPopUpActivity.class);
-                intent.putExtra("Date", date);
-                intent.putExtra("remark", remark);
-                intent.putExtra("trainer_email", trainerEmai);
-                intent.putExtra("from", fromDate);
-                intent.putExtra("to", toDate);
-                intent.putExtra("person", companyPerson);
-                intent.putExtra("final_status", finalStatus);
-                intent.putExtra("approval", approval);
-                intent.putExtra("status", status);
-                intent.putExtra("fees", fees);
-                intent.putExtra("due", due);
-                intent.putExtra("paid_on", paidOn);
-                intent.putExtra("location", location);
-                intent.putExtra("paid", paid);
+                intent.putExtra("intent", "Appt");
+                intent.putExtra("app_id", app_id[position]);
+                intent.putExtra("staff_id", staff_id[position]);
+                intent.putExtra("company_id", company_id[position]);
+                intent.putExtra("call_loop_id", call_loop_id[position]);
+                intent.putExtra("date", date[position]);
+                intent.putExtra("remark", remark[position]);
+                intent.putExtra("fromdate", fromDate[position]);
+                intent.putExtra("todate", toDate[position]);
+                intent.putExtra("company_person", company_person[position]);
+                intent.putExtra("Post_remark", Post_remark[position]);
+                intent.putExtra("status", status[position]);
+                intent.putExtra("final_status", final_status[position]);
+                intent.putExtra("approval", approval[position]);
+                intent.putExtra("trainer_id", trainer_id[position]);
+                intent.putExtra("trainer_cnf", trainer_cnf[position]);
+                intent.putExtra("trainers", trainers[position]);
+                intent.putExtra("trainer_email", trainer_email[position]);
+                intent.putExtra("added_by", addedBy[position]);
+                intent.putExtra("location", location[position]);
                 startActivity(intent);
                 return true;
             }
@@ -140,7 +172,7 @@ public class AppointmentsFragment extends Fragment {
 
             PostingClass ruc = new PostingClass();
 
-            String result = ruc.sendPostRequest("https://bijatraining.000webhostapp.com/program_ret.php", data);
+            String result = ruc.sendPostRequest("https://bijatraining.000webhostapp.com/appointment_ret.php", data);
 
             return result;
         }
@@ -155,32 +187,33 @@ public class AppointmentsFragment extends Fragment {
 
 
                     JSONObject json = jsonArray.getJSONObject(i);
-                    Log.i("JSON OBJ", json.getString("prg_id"));
+                    Log.i("JSON OBJ", json.getString("app_id"));
 
 
-                    prg_id = json.getString("prg_id");
-                    title = json.getString("title");
-                    trainer = json.getString("trainers");
-                    addedBy = json.getString("added_by");
-                    date = json.getString("date");
-                    remark = json.getString("remark");
-                    status = json.getString("trainer_cnf");
-                    trainerEmai = json.getString("trainer_email");
-                    fromDate = json.getString("fromdate");
-                    toDate = json.getString("todate");
-                    companyPerson = json.getString("company_person");
-                    finalStatus = json.getString("final_status");
-                    approval = json.getString("approval");
-                    fees = json.getString("fees");
-                    paid = json.getString("paid");
-                    due = json.getString("due");
-                    location = json.getString("location");
-                    paidOn = json.getString("t_paid_on");
+                    app_id[i] = json.getString("app_id");
+                    staff_id[i] = json.getString("staff_id");
+                    company_id[i] = json.getString("company_id");
+                    call_loop_id[i] = json.getString("call_loop_id");
+                    date[i] = json.getString("date");
+                    remark[i]= json.getString("remark");
+                    fromDate[i] = json.getString("fromdate");
+                    toDate[i] = json.getString("todate");
+                    company_person[i] = json.getString("company_person");
+                    Post_remark[i] = json.getString("Post_remark");
+                    status[i] = json.getString("status");
+                    final_status[i] = json.getString("final_status");
+                    approval[i] = json.getString("approval");
+                    trainer_id[i] = json.getString("trainer_id");
+                    trainer_cnf[i] = json.getString("trainer_cnf");
+                    trainers[i] = json.getString("trainers");
+                    location[i] = json.getString("location");
+                    trainer_email[i] = json.getString("trainer_email");
+                    addedBy[i] = json.getString("added_by");
 
 
                     loading.dismiss();
 
-                    appointmentLists.add(new AppointmentList(prg_id, title, trainer, addedBy));
+                    appointmentLists.add(new AppointmentList(app_id[i], date[i], staff_id[i], addedBy[i]));
 
                     listView = getActivity().findViewById(R.id.appointment_list);
 

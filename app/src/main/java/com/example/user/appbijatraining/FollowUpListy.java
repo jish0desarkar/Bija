@@ -3,15 +3,34 @@ package com.example.user.appbijatraining;
 public class FollowUpListy {
 
 
-    String flwText;
+    String prg_id;
+    String title;
+    String trainer;
+    String addedBy;
 
-    public FollowUpListy (String flwText){
-        this.flwText = flwText;
+
+    public FollowUpListy(String prg_id, String title, String trainer, String addedBy) {
+        this.prg_id = prg_id;
+        this.title = title;
+        this.trainer = trainer;
+        this.addedBy = addedBy;
+
     }
 
-    public String getFlwText() {
-        return flwText;
+    public String getPrg_id() {
+        return prg_id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getTrainer() {
+        return trainer;
+    }
+
+    public String getAddedBy() {
+        return addedBy;
+    }
 
 }

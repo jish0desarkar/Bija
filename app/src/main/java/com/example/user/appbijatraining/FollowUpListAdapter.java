@@ -40,37 +40,19 @@ public class FollowUpListAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
         @SuppressLint("ViewHolder") View view = inflater.inflate(R.layout.custom_followups_list_item, null);
-        TextView flwText = view.findViewById(R.id.hist_text);
-        Button detailsButton = view.findViewById(R.id.Details_button);
-        Button historyButton = view.findViewById(R.id.status_btn);
-        detailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = "Details about this event";
-                Intent intent = new Intent(getContext(), PopUpActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("Text", text);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
 
-            }
-        });
-        historyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = "Details about this event";
-                Intent intent = new Intent(getContext(), PopUpActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("Text", text);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+        TextView prg_idText = view.findViewById(R.id.prg_id);
+        TextView titleText = view.findViewById(R.id.title);
 
-            }
-        });
+
+        TextView trainerText = view.findViewById(R.id.trainer);
+
 
         FollowUpListy followUpListy = followUpListies.get(position);
-        flwText.setText(followUpListy.getFlwText());
-
+        String prgid = followUpListy.getPrg_id() + ".";
+        prg_idText.setText(prgid);
+        titleText.setText(followUpListy.getTitle());
+        trainerText.setText(followUpListy.getTrainer());
 
         return view;
     }
