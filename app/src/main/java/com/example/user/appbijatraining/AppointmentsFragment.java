@@ -127,7 +127,7 @@ public class AppointmentsFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), LongPressPopUpActivity.class);
-                intent.putExtra("intent", "Appt");
+                intent.putExtra("tag", "Appt");
                 intent.putExtra("app_id", app_id[position]);
                 intent.putExtra("staff_id", staff_id[position]);
                 intent.putExtra("company_id", company_id[position]);
