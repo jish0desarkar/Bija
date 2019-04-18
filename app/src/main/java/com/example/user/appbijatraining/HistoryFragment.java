@@ -24,7 +24,7 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         navigationView = getActivity().findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.history_nav_btn);
+        //navigationView.setCheckedItem(R.id.history_nav_btn);
 
         return inflater.inflate(R.layout.fragment_history, container, false);
 

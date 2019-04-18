@@ -2,6 +2,7 @@ package com.example.user.appbijatraining;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,8 +37,25 @@ public class ProgrammeFragment extends Fragment {
     static ArrayList<ProgrammeList> programmeLists;
     static ListView listView;
     TextView staff_id;
-    String prg_id, title, trainer, addedBy, date, remark, status, trainerEmai, trainerDate, fromDate, toDate, companyPerson,
-    finalStatus, approval, fees, paid, due, paidOn, location;
+    String[] prg_id = new String[100];
+    String[] title = new String[100];
+    String[] trainer = new String[100];
+    String[] addedBy = new String[100];
+    String[] date = new String[100];
+    String[] remark = new String[100];
+    String[] status = new String[100];
+    String[] trainerEmai = new String[100];
+    String[] trainerDate = new String[100];
+    String[] fromDate = new String[100];
+    String[] toDate = new String[100];
+    String[] companyPerson = new String[100];
+    String[] finalStatus = new String[100];
+    String[] approval = new String[100];
+    String[] fees = new String[100];
+    String[] paidOn = new String[100];
+    String[] paid = new String[100];
+    String[] due = new String[100];
+    String[] location = new String[100];
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,12 +74,17 @@ public class ProgrammeFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Programme");
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        PostingClass postingClass = new PostingClass();
-        hashMap.put("staff_id", "73");
-        hashMap.put("date", "2071-04-09");
+        Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
 
-       new FetchProgram().execute("73", "2017-04-09");
+        Calendar calendar = Calendar.getInstance();
+
+        Date dateclass = calendar.getTime();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String strDate = simpleDateFormat.format(dateclass);
+
+        new FetchProgram().execute("73", "2017-04-12");
 
         programmeLists = new ArrayList<>();
 
@@ -92,21 +119,24 @@ public class ProgrammeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+
                 Intent intent = new Intent(getContext(), PopUpActivity.class);
-                intent.putExtra("Date", date);
-                intent.putExtra("remark", remark);
-                intent.putExtra("trainer_email", trainerEmai);
-                intent.putExtra("from", fromDate);
-                intent.putExtra("to", toDate);
-                intent.putExtra("person", companyPerson);
-                intent.putExtra("final_status", finalStatus);
-                intent.putExtra("approval", approval);
-                intent.putExtra("status", status);
-                intent.putExtra("fees", fees);
-                intent.putExtra("due", due);
-                intent.putExtra("paid_on", paidOn);
-                intent.putExtra("location", location);
-                intent.putExtra("paid", paid);
+                intent.putExtra("intent", "prog");
+                intent.putExtra("Date", date[position]);
+                intent.putExtra("remark", remark[position]);
+                intent.putExtra("trainer_email", trainerEmai[position]);
+                intent.putExtra("from", fromDate[position]);
+                intent.putExtra("to", toDate[position]);
+                intent.putExtra("person", companyPerson[position]);
+                intent.putExtra("final_status", finalStatus[position]);
+                intent.putExtra("approval", approval[position]);
+                intent.putExtra("status", status[position]);
+                intent.putExtra("fees", fees[position]);
+                intent.putExtra("due", due[position]);
+                intent.putExtra("paid_on", paidOn[position]);
+                intent.putExtra("location", location[position]);
+                intent.putExtra("paid", paid[position]);
 
                 startActivity(intent);
 
@@ -141,52 +171,65 @@ public class ProgrammeFragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.i("JSON", result);
-            try {
-                JSONArray jsonArray = new JSONArray(result);
-                for (int i = 0; i < jsonArray.length(); i++) {
+            loading.dismiss();
+
+            if (result.equalsIgnoreCase("No pending available")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("NO PENDING AVAILABLE")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // FIRE ZE MISSILES!
+                            }
+                        });
+                builder.create().show();
+                // Create the AlertDialog object and return i
+            } else {
+
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    for (int i = 0; i < jsonArray.length(); i++) {
 
 
-
-                    JSONObject json = jsonArray.getJSONObject(i);
-                    Log.i("JSON OBJ", json.getString("prg_id"));
-
-
-                    prg_id = json.getString("prg_id");
-                    title = json.getString("title");
-                    trainer = json.getString("trainers");
-                    addedBy = json.getString("added_by");
-                    date = json.getString("date");
-                    remark = json.getString("remark");
-                    status = json.getString("trainer_cnf");;
-                    trainerEmai = json.getString("trainer_email");
-                    fromDate = json.getString("fromdate");
-                    toDate = json.getString("todate");
-                    companyPerson = json.getString("company_person");
-                    finalStatus = json.getString("final_status");
-                    approval = json.getString("approval");
-                    fees = json.getString("fees");
-                    paid = json.getString("paid");
-                    due = json.getString("due");
-                    location = json.getString("location");
-                    paidOn = json.getString("t_paid_on");
+                        JSONObject json = jsonArray.getJSONObject(i);
+                        Log.i("JSON OBJ", json.getString("prg_id"));
 
 
+                        prg_id[i] = json.getString("prg_id");
+                        title[i] = json.getString("title");
+                        trainer[i] = json.getString("trainers");
+                        addedBy[i] = json.getString("added_by");
+                        date[i] = json.getString("date");
+                        remark[i] = json.getString("remark");
+                        status[i] = json.getString("trainer_cnf");
+                        ;
+                        trainerEmai[i] = json.getString("trainer_email");
+                        fromDate[i] = json.getString("fromdate");
+                        toDate[i] = json.getString("todate");
+                        companyPerson[i] = json.getString("company_person");
+                        finalStatus[i] = json.getString("final_status");
+                        approval[i] = json.getString("approval");
+                        fees[i] = json.getString("fees");
+                        paid[i] = json.getString("paid");
+                        due[i] = json.getString("due");
+                        location[i] = json.getString("location");
+                        paidOn[i] = json.getString("t_paid_on");
 
 
-                    loading.dismiss();
+                        loading.dismiss();
 
-                    programmeLists.add(new ProgrammeList(prg_id, title, trainer, addedBy));
+                        programmeLists.add(new ProgrammeList(prg_id[i], title[i], trainer[i], addedBy[i]));
 
-                    listView = getActivity().findViewById(R.id.program_list);
+                        listView = getActivity().findViewById(R.id.program_list);
 
-                    ProgramListAdapter adapter = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
+                        ProgramListAdapter adapter = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
 
-                    listView.setAdapter(adapter);
+                        listView.setAdapter(adapter);
 
 
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
 

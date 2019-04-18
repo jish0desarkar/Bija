@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -323,6 +324,11 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
             @Override
             public void onClick(View v) {
 
+                if (String.valueOf(flw_dateDayFinal).equalsIgnoreCase("")|| String.valueOf(t_datesDayFinal).equalsIgnoreCase("") || String.valueOf(fromDayFinal).equalsIgnoreCase("")){
+                    Toast.makeText(getApplicationContext(), "please fill in the details properly", Toast.LENGTH_LONG).show();
+                }
+
+
                 //CHECKING WHICH INTENT THE LONGPRESSINTENT WAS CLICKED FROM
                 if (tag.equalsIgnoreCase("Follow Up")) {
 
@@ -422,6 +428,40 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                         String postRemark = intent.getStringExtra("post_remark");
                         String lastCallDate = intent.getStringExtra("lastcalldate");
 
+                        if(TextUtils.isEmpty(titleField.getText())) {
+                            titleField.setError("Your message");
+                            return;
+                        }
+                        if(TextUtils.isEmpty(feesField.getText())) {
+                            feesField.setError("Your message");
+                            return;
+                        }
+                        if(TextUtils.isEmpty(t_feesField.getText())) {
+                            t_feesField.setError("Your message");
+                            return;
+                        }
+                        if(TextUtils.isEmpty(trainerFeesField.getText())) {
+                            trainerFeesField.setError("Your message");
+                            return;
+                        }
+                        if(TextUtils.isEmpty(paidField.getText())) {
+                            paidField.setError("Your message");
+                            return;
+                        }
+                        if(TextUtils.isEmpty(t_paidField.getText())) {
+                            t_paidField.setError("Your message");
+                            return;
+                        }
+                        if(TextUtils.isEmpty(trainerIDField.getText())) {
+                            trainerIDField.setError("Your message");
+                            return;
+                        }
+                        if(TextUtils.isEmpty(titleField.getText())) {
+                            titleField.setError("Your message");
+                            return;
+                        }
+
+
 
                         data.put("flw_id", flwId);
                         data.put("title", titleField.getText().toString());
@@ -439,25 +479,25 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                         data.put("todate", String.valueOf(toYearFinal) + "-" + String.valueOf(toMonthFinal) + "-" + String.valueOf(toDayFinal));
 
                         data.put("fromdate", String.valueOf(fromYearFinal) + "-" + String.valueOf(fromMonthFinal) + "-" + String.valueOf(fromDayFinal));
-                        Log.i("fromdate", data.get("fromdate"));
+                        //Log.i("fromdate", data.get("fromdate"));
                         data.put("company_person", person);
                         data.put("Post_remark", postRemarkEdiText.getText().toString());
                         data.put("final_status", "program");
                         data.put("approval", "approved");
                         data.put("fees", feesField.getText().toString());
-                        Log.i("fees", data.get("fees"));
+                       // Log.i("fees", data.get("fees"));
                         data.put("paid", paidField.getText().toString());
                         Log.i("paid", data.get("paid"));
                         data.put("due", String.valueOf(Integer.parseInt(feesField.getText().toString()) - Integer.parseInt(paidField.getText().toString())));
-                        Log.i("due", data.get("due"));
+                       // Log.i("due", data.get("due"));
                         data.put("t_fee", t_feesField.getText().toString());
-                        Log.i("t_fee", data.get("t_fee"));
+                       // Log.i("t_fee", data.get("t_fee"));
                         data.put("t_paid", t_paidField.getText().toString());
-                        Log.i("t_paid", data.get("t_paid"));
+                       // Log.i("t_paid", data.get("t_paid"));
                         data.put("t_due", String.valueOf(Integer.parseInt(t_feesField.getText().toString()) - Integer.parseInt(t_paidField.getText().toString())));
-                        Log.i("t_due", data.get("t_due"));
+                       // Log.i("t_due", data.get("t_due"));
                         data.put("t_paid_on", String.valueOf(t_paidYearFinal) + "-" + String.valueOf(t_paidMonthFinal) + "-" + String.valueOf(t_paidDayFinal));
-                        Log.i("t_paid_on", String.valueOf(t_paidYearFinal) + String.valueOf(t_paidMonthFinal) + String.valueOf(t_paidDayFinal));
+                     //   Log.i("t_paid_on", String.valueOf(t_paidYearFinal) + String.valueOf(t_paidMonthFinal) + String.valueOf(t_paidDayFinal));
                         data.put("added_by", addedBy);
                         data.put("location", locationField.getText().toString());
                         data.put("invoice_id", invoiceField.getText().toString());
@@ -874,7 +914,7 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            Log.i("SentAPPT", result);
+            Log.w("SentAPPT", result);
 
             loading.dismiss();
 
@@ -955,7 +995,7 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            Log.i("PROGRAM RET", result);
+            Log.w("PROGRAM RET", result);
             loading.dismiss();
 
             if (result.equalsIgnoreCase("success")) {

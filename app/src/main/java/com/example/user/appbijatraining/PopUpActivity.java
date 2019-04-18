@@ -26,6 +26,8 @@ public class PopUpActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String activity = intent.getStringExtra("intent");
+        Bundle bundle = new Bundle();
+        String bundleString = bundle.getString("intent");
 
 
         if(activity.equalsIgnoreCase("Follow Up")) {
@@ -261,6 +263,84 @@ public class PopUpActivity extends AppCompatActivity {
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
             getWindow().setLayout((int) (displayMetrics.widthPixels * .86), (int) (displayMetrics.heightPixels * .88));
+
+
+
+
+
+
+
+        }
+
+        if(activity.equalsIgnoreCase("prog")){
+
+            setContentView(R.layout.activity_pop_up);
+
+            String date = intent.getStringExtra("Date");
+            String remark = intent.getStringExtra("remark");
+            String trainer_email = intent.getStringExtra("trainer_email" );
+            Log.i("trainer email", trainer_email);
+            String from = intent.getStringExtra("from" );
+            String to = intent.getStringExtra("to" );
+            String person = intent.getStringExtra("person");
+            String final_status = intent.getStringExtra("final_status");
+            String approval = intent.getStringExtra("approval");
+            String status = intent.getStringExtra("status");
+            String fees=intent.getStringExtra("fees");
+            String due = intent.getStringExtra("due");
+            String paid_on = intent.getStringExtra("paid_on");
+            String location = intent.getStringExtra("location");
+            String paid = intent.getStringExtra("paid");
+
+
+            TextView trainer_emailText = findViewById(R.id.trainer_emailll);
+            TextView statusText = findViewById(R.id.status);
+            TextView final_statusText = findViewById(R.id.Final_status);
+            TextView approvalText = findViewById(R.id.approval);
+            TextView dateText = findViewById(R.id.date);
+            TextView remarkText = findViewById(R.id.remark);
+            TextView fromDateText = findViewById(R.id.from);
+            TextView toDateText = findViewById(R.id.to);
+            TextView companyPersonText = findViewById(R.id.Person);
+            TextView feesText = findViewById(R.id.fees);
+            TextView dueText = findViewById(R.id.due);
+            TextView paidonText = findViewById(R.id.paid_on);
+            TextView paidText = findViewById(R.id.paid);
+            //TextView callloopText = findViewById(R.id.a_call_loop_id);
+            TextView locationText = findViewById(R.id.location);
+
+           trainer_emailText.setText(trainer_email);
+            statusText.setText(status);
+            final_statusText.setText(final_status);
+            approvalText.setText(approval);
+            dateText.setText(date);
+            remarkText.setText(remark);
+            fromDateText.setText(from);
+            toDateText.setText(to);
+            companyPersonText.setText(person);
+            feesText.setText(fees);
+            dueText.setText(due);
+            paidonText.setText(paid_on);
+            paidText.setText(paid);
+            locationText.setText(location);
+            closeButton = findViewById(R.id.close_pop_button);
+
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+            getWindow().setLayout((int) (displayMetrics.widthPixels * .86), (int) (displayMetrics.heightPixels * .88));
+
+
+
+
+
+
 
 
 

@@ -21,7 +21,7 @@ public class SendFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         navigationView = getActivity().findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.send_nav_bt);
+        //navigationView.setCheckedItem(R.id.send_nav_bt);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Send");
         return inflater.inflate(R.layout.fragment_send, container, false);

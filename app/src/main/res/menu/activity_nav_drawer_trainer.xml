@@ -12,10 +12,7 @@
             android:icon="@drawable/notification"
             android:title="Notifications"
             android:id="@+id/notification_nav_bt" />
-        <item
-            android:icon="@drawable/upload"
-            android:title="Send"
-            android:id="@+id/send_nav_bt"/>
+
         <item
             android:icon="@drawable/avatar"
             android:title="Profile"
@@ -37,10 +34,6 @@
             android:title="Programme"
             android:id="@+id/prog_nav_btn"/>
         <item
-            android:icon="@drawable/history"
-            android:title="History"
-            android:id="@+id/history_nav_btn"/>
-        <item
             android:icon="@drawable/calendar"
             android:title="Calendar"
             android:id="@+id/calendar_nav_btn"/>
@@ -52,14 +45,7 @@
             android:icon="@drawable/logout"
             android:title="Sign Out"
             android:id="@+id/signout_nav_bt"/>
-        <item
-            android:icon="@drawable/key"
-            android:title="Change Password"
-            android:id="@+id/passChange_nav_bt"/>
-        <item
-            android:icon="@drawable/settings"
-            android:title="Settings"
-            android:id="@+id/settings_nav_btn"/>
+
     </group>
 
 

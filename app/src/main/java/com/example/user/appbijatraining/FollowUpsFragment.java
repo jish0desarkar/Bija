@@ -1,6 +1,7 @@
 package com.example.user.appbijatraining;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -77,10 +82,15 @@ public class FollowUpsFragment extends Fragment {
 
         followUpListies = new ArrayList<>();
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        PostingClass postingClass = new PostingClass();
-        hashMap.put("flw_id", "73");
-        hashMap.put("date", "2071-04-12");
+        /*Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
+
+        Calendar calendar = Calendar.getInstance();
+
+        Date dateclass = calendar.getTime();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String strDate = simpleDateFormat.format(dateclass);*/
 
         new FetchProgram().execute("73", "2017-04-12");
 
@@ -179,33 +189,50 @@ public class FollowUpsFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
 
-            int pos;
+
 
             super.onPostExecute(result);
-            Log.i("JSON", result);
-            try {
-                JSONArray jsonArray = new JSONArray(result);
-                for (int i = 0; i < jsonArray.length(); i++) {
 
-                    countJSON++;
 
-                    JSONObject json = jsonArray.getJSONObject(i);
-                    Log.i("JSON OBJ", json.getString("flw_id"));
-                   // String flw_id, staff_id, company_id,call_loop_id, followup_date, post_remark, lastcalldate, title, trainer, addedBy, date, remark, status, trainerEmai, trainerDate, fromDate, toDate, companyPerson,
-                          //  finalStatus, approval, fees, paid, due, paidOn, location;
-                    flw_id[i] = json.getString("flw_id");
-                    addedBy[i] = json.getString("added_by");
-                    staff_id[i] = json.getString("staff_id");
-                    company_id[i] = json.getString("company_id");
-                    call_loop_id[i] = json.getString("call_loop_id");
-                    followup_date[i] = json.getString("followup_date");
-                    remark[i] = json.getString("remark");
-                    status[i] = json.getString("status");
-                    post_remark[i] = json.getString("Post_remark");
-                    lastcalldate[i] = json.getString("lastcalldate");
-                    date[i] = json.getString("date");
-                    companyPerson[i] = json.getString("company_person");
-                    finalStatus[i] = json.getString("final_status");
+            loading.dismiss();
+
+            if(result.equalsIgnoreCase("No pending available")){
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("NO PENDING AVAILABLE")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // FIRE ZE MISSILES!
+                            }
+                        });
+                builder.create().show();
+                // Create the AlertDialog object and return i
+            }
+
+            else {
+                Log.i("JSON", result);
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        countJSON++;
+
+                        JSONObject json = jsonArray.getJSONObject(i);
+                        Log.i("JSON OBJ", json.getString("flw_id"));
+                        // String flw_id, staff_id, company_id,call_loop_id, followup_date, post_remark, lastcalldate, title, trainer, addedBy, date, remark, status, trainerEmai, trainerDate, fromDate, toDate, companyPerson,
+                        //  finalStatus, approval, fees, paid, due, paidOn, location;
+                        flw_id[i] = json.getString("flw_id");
+                        addedBy[i] = json.getString("added_by");
+                        staff_id[i] = json.getString("staff_id");
+                        company_id[i] = json.getString("company_id");
+                        call_loop_id[i] = json.getString("call_loop_id");
+                        followup_date[i] = json.getString("followup_date");
+                        remark[i] = json.getString("remark");
+                        status[i] = json.getString("status");
+                        post_remark[i] = json.getString("Post_remark");
+                        lastcalldate[i] = json.getString("lastcalldate");
+                        date[i] = json.getString("date");
+                        companyPerson[i] = json.getString("company_person");
+                        finalStatus[i] = json.getString("final_status");
                    /* fees = json.getString("fees");
                     paid = json.getString("paid");
                     due = json.getString("due");
@@ -213,21 +240,21 @@ public class FollowUpsFragment extends Fragment {
                     paidOn = json.getString("t_paid_on");*/
 
 
+                        loading.dismiss();
 
-                    loading.dismiss();
+                        followUpListies.add(new FollowUpListy(flw_id[i], date[i], addedBy[i], finalStatus[i]));
 
-                    followUpListies.add(new FollowUpListy(flw_id[i], date[i], addedBy[i], finalStatus[i]));
+                        listView = getActivity().findViewById(R.id.followup_list);
 
-                    listView = getActivity().findViewById(R.id.followup_list);
+                        FollowUpListAdapter adapter = new FollowUpListAdapter(getContext(), R.layout.custom_programme_listview, followUpListies);
 
-                    FollowUpListAdapter adapter = new FollowUpListAdapter(getContext(), R.layout.custom_programme_listview, followUpListies);
-
-                    listView.setAdapter(adapter);
+                        listView.setAdapter(adapter);
 
 
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
     }
