@@ -76,7 +76,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 if(s.charAt(0)=='{'){
                     try {
                         JSONObject jsonObject = new JSONObject(s);
-                        if(jsonObject.get("role").toString().equals("staff"))
+                        if(jsonObject.get("role").toString().equals("staff") || jsonObject.get("role").toString().equals("admin"))
                         {
                             String staff_email=jsonObject.get("staff_email").toString();
                             String staff_id=jsonObject.get("staff_id").toString();
@@ -103,6 +103,34 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                             long newRowId = db.insert(StaffContract.FeedEntry.TABLE_NAME, null, values);
 
                         }
+                        else if(jsonObject.get("role").toString().equals("trainer"))
+                        {
+                            String staff_email=jsonObject.get("email").toString();
+                            String staff_id=jsonObject.get("trainer_id").toString();
+                            String staff_contactno=jsonObject.get("contactno").toString();
+                            String staff_location=jsonObject.get("state").toString();
+                            String staff_city=jsonObject.get("city").toString();
+                            String staff_name=jsonObject.get("name").toString();
+                            String staff_role=jsonObject.get("role").toString();
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+                            ContentValues values = new ContentValues();
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_UID, 1);
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_ID, staff_id);
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_EMAIL, staff_email);
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_CONTACTNO, staff_contactno);
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_LOCATION, staff_location);
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_CITY, staff_city);
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_NAME, staff_name);
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_ID, staff_id);
+                            values.put(StaffContract.FeedEntry.COLUMN_NAME_ROLE, staff_role);
+
+// Insert the new row, returning the primary key value of the new row
+                            long newRowId = db.insert(StaffContract.FeedEntry.TABLE_NAME, null, values);
+
+                        }
+
 
 
 
