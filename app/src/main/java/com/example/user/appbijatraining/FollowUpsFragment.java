@@ -82,7 +82,7 @@ public class FollowUpsFragment extends Fragment {
 
         followUpListies = new ArrayList<>();
 
-        /*Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
+        Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
 
         Calendar calendar = Calendar.getInstance();
 
@@ -90,9 +90,9 @@ public class FollowUpsFragment extends Fragment {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        String strDate = simpleDateFormat.format(dateclass);*/
+        String strDate = simpleDateFormat.format(dateclass);
 
-        new FetchProgram().execute("73", "2017-04-12");
+        new FetchProgram().execute(detail_extracter.getId(), strDate);
 
         listView = getActivity().findViewById(R.id.followup_list);
 

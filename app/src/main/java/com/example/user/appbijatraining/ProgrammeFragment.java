@@ -84,7 +84,12 @@ public class ProgrammeFragment extends Fragment {
 
         String strDate = simpleDateFormat.format(dateclass);
 
-        new FetchProgram().execute("73", "2017-04-12");
+        if (detail_extracter.getRole().equalsIgnoreCase("trainer"))
+
+            new FetchProgram().execute(detail_extracter.getId(), strDate, detail_extracter.getRole());
+
+        if (detail_extracter.getRole().equalsIgnoreCase("staff"))
+            new FetchProgram().execute(detail_extracter.getId(), strDate, detail_extracter.getRole());
 
         programmeLists = new ArrayList<>();
 
@@ -157,8 +162,17 @@ public class ProgrammeFragment extends Fragment {
         @Override
         protected String doInBackground(String... arg0) {
             HashMap<String, String> data = new HashMap<>();
-            data.put("staff_id", arg0[0]);
-            data.put("date", arg0[1]);
+            if(arg0[2].equalsIgnoreCase("trainer")) {
+                data.put("trainer_id", arg0[0]);
+                data.put("date", arg0[1]);
+                data.put("role", arg0[2]);
+            }
+            if (arg0[2].equalsIgnoreCase("staff")){
+                data.put("staff_id", arg0[0]);
+                data.put("date", arg0[1]);
+                data.put("role", arg0[2]);
+
+            }
 
             PostingClass ruc = new PostingClass();
 

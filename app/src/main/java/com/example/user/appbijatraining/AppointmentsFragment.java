@@ -56,6 +56,7 @@ public class AppointmentsFragment extends Fragment {
     String[] trainer_email = new String[30];
     String[] addedBy = new String[30];
     String[] location = new String[30];
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,12 +74,15 @@ public class AppointmentsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-       Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        Detail_Extracter detail_extracter = new Detail_Extracter(getActivity().getApplicationContext());
+
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Appointments");
 
         appointmentLists = new ArrayList<>();
 
-        /*Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
+        //Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
 
         Calendar calendar = Calendar.getInstance();
 
@@ -86,11 +90,16 @@ public class AppointmentsFragment extends Fragment {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        String strDate = simpleDateFormat.format(dateclass);*/
+        String strDate = simpleDateFormat.format(dateclass);
 
-        new FetchProgram().execute("73", "2017-04-09");
+        Log.w("DATE", detail_extracter.getRole());
 
+        if (detail_extracter.getRole().equalsIgnoreCase("trainer"))
 
+            new FetchProgram().execute(detail_extracter.getId(), strDate, detail_extracter.getRole());
+
+        if (detail_extracter.getRole().equalsIgnoreCase("staff"))
+            new FetchProgram().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
 
 
         listView = getActivity().findViewById(R.id.appointment_list);
@@ -126,7 +135,6 @@ public class AppointmentsFragment extends Fragment {
                 intent.putExtra("location", location[position]);
 
 
-
                 startActivity(intent);
 
 
@@ -135,35 +143,37 @@ public class AppointmentsFragment extends Fragment {
 
         listView.setLongClickable(true);
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), LongPressPopUpActivity.class);
-                intent.putExtra("tag", "Appt");
-                intent.putExtra("app_id", app_id[position]);
-                intent.putExtra("staff_id", staff_id[position]);
-                intent.putExtra("company_id", company_id[position]);
-                intent.putExtra("call_loop_id", call_loop_id[position]);
-                intent.putExtra("date", date[position]);
-                intent.putExtra("remark", remark[position]);
-                intent.putExtra("fromdate", fromDate[position]);
-                intent.putExtra("todate", toDate[position]);
-                intent.putExtra("company_person", company_person[position]);
-                intent.putExtra("Post_remark", Post_remark[position]);
-                intent.putExtra("status", status[position]);
-                intent.putExtra("final_status", final_status[position]);
-                intent.putExtra("approval", approval[position]);
-                intent.putExtra("trainer_id", trainer_id[position]);
-                intent.putExtra("trainer_cnf", trainer_cnf[position]);
-                intent.putExtra("trainers", trainers[position]);
-                intent.putExtra("trainer_email", trainer_email[position]);
-                intent.putExtra("added_by", addedBy[position]);
-                intent.putExtra("location", location[position]);
-                startActivity(intent);
-                return true;
-            }
-        });
+        if (detail_extracter.getRole().equalsIgnoreCase("staff")) {
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(getContext(), LongPressPopUpActivity.class);
+                    intent.putExtra("tag", "Appt");
+                    intent.putExtra("app_id", app_id[position]);
+                    intent.putExtra("staff_id", staff_id[position]);
+                    intent.putExtra("company_id", company_id[position]);
+                    intent.putExtra("call_loop_id", call_loop_id[position]);
+                    intent.putExtra("date", date[position]);
+                    intent.putExtra("remark", remark[position]);
+                    intent.putExtra("fromdate", fromDate[position]);
+                    intent.putExtra("todate", toDate[position]);
+                    intent.putExtra("company_person", company_person[position]);
+                    intent.putExtra("Post_remark", Post_remark[position]);
+                    intent.putExtra("status", status[position]);
+                    intent.putExtra("final_status", final_status[position]);
+                    intent.putExtra("approval", approval[position]);
+                    intent.putExtra("trainer_id", trainer_id[position]);
+                    intent.putExtra("trainer_cnf", trainer_cnf[position]);
+                    intent.putExtra("trainers", trainers[position]);
+                    intent.putExtra("trainer_email", trainer_email[position]);
+                    intent.putExtra("added_by", addedBy[position]);
+                    intent.putExtra("location", location[position]);
+                    startActivity(intent);
+                    return true;
+                }
+            });
 
+        }
     }
 
     class FetchProgram extends AsyncTask<String, String, String> {
@@ -179,8 +189,17 @@ public class AppointmentsFragment extends Fragment {
         @Override
         protected String doInBackground(String... arg0) {
             HashMap<String, String> data = new HashMap<>();
-            data.put("staff_id", arg0[0]);
-            data.put("date", arg0[1]);
+            if(arg0[2].equalsIgnoreCase("trainer")) {
+                data.put("trainer_id", arg0[0]);
+                data.put("date", arg0[1]);
+                data.put("role", arg0[2]);
+            }
+            if (arg0[2].equalsIgnoreCase("staff")){
+                data.put("staff_id", arg0[0]);
+                data.put("date", arg0[1]);
+                data.put("role", arg0[2]);
+
+            }
 
             PostingClass ruc = new PostingClass();
 

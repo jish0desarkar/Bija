@@ -9,6 +9,7 @@
     android:background="@drawable/pop_up_bg">
 
 
+
     <EditText
         android:id="@+id/t_fee_field"
         android:layout_width="108dp"
@@ -200,7 +201,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.298" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/trainers_field"
         android:layout_width="277dp"
         android:layout_height="45dp"
@@ -218,7 +219,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.365" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/trainer_email_field"
         android:layout_width="277dp"
         android:layout_height="49dp"

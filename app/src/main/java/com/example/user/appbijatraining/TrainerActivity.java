@@ -3,6 +3,7 @@ package com.example.user.appbijatraining;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +14,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -144,6 +147,20 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
         Detail_Extracter detail_extracter = new Detail_Extracter(getApplicationContext());
         email_nav.setText(detail_extracter.getEmail());
         name_nav.setText(detail_extracter.getName());
+        if(detail_extracter.getRole().equalsIgnoreCase("trainer")){
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.flwup_nav_btn).setVisible(false);
+        }
+
+
+
+        StaffDetailDbHelper detailDbHelper = new StaffDetailDbHelper(this);
+
+
+
+
+
+
 
         /*List<String> list = new ArrayList<>();
         list.add("dummy1");
@@ -155,6 +172,7 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
         listView1.setAdapter(arrayAdapter);
         listView2.setAdapter(arrayAdapter);*/
         drawerLayout = findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.Nav_open, R.string.nav_close);
         drawerLayout.addDrawerListener(toggle);
@@ -162,8 +180,12 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TrainerFragment()).commit();
             navigationView.setCheckedItem(R.id.home_nav_bt);
+
         }
-       // textView1.setText("Programmes");
+
+
+
+        // textView1.setText("Programmes");
         //textView2.setText("Appointment");
 
     }
@@ -175,6 +197,5 @@ public class TrainerActivity extends AppCompatActivity implements NavigationView
         setSupportActionBar(toolbar);
 
     }
-
 
 }

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +33,8 @@ import java.util.List;
 public class TrainerFragment extends Fragment {
     static List<AppointmentList> appointmentLists;
     static ListView listView1;
+
+    public static Handler UIHandler;
 
     String[] app_id = new String[30];
     String[] staff_id = new String[30];
@@ -98,8 +102,13 @@ public class TrainerFragment extends Fragment {
 
         appointmentLists = new ArrayList<>();
 
-        new FetchProgram().execute("73", "2017-04-12");
+        Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
+        if (detail_extracter.getRole().equalsIgnoreCase("trainer"))
 
+            new FetchProgram().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
+
+        if (detail_extracter.getRole().equalsIgnoreCase("staff"))
+            new FetchProgram().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
 
 
 
@@ -111,9 +120,18 @@ public class TrainerFragment extends Fragment {
 
         programmeLists = new ArrayList<>();
 
-        new FetchProgram1().execute("73", "2017-04-09");
+
+        if (detail_extracter.getRole().equalsIgnoreCase("trainer"))
+
+            new FetchProgram1().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
+
+        if (detail_extracter.getRole().equalsIgnoreCase("staff"))
+            new FetchProgram1().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
+
 
         listView2 = getActivity().findViewById(R.id.listprg);
+
+        Log.w("banu", detail_extracter.getId());
 
         ProgramListAdapter adapter1 = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
 
@@ -125,6 +143,8 @@ public class TrainerFragment extends Fragment {
         list1.setAdapter(adapter);
 
         list2 = getActivity().findViewById(R.id.listprg);
+
+
 
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1, program);
         list2.setAdapter(adapter1);*/
@@ -173,14 +193,23 @@ public class TrainerFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(getContext(), "", "Hold on.....", true, false);
+           // loading = ProgressDialog.show(getContext(), "", "Hold on.....", true, true);
         }
 
         @Override
         protected String doInBackground(String... arg0) {
             HashMap<String, String> data = new HashMap<>();
-            data.put("staff_id", arg0[0]);
-            data.put("date", arg0[1]);
+            if(arg0[2].equalsIgnoreCase("trainer")) {
+                data.put("trainer_id", arg0[0]);
+                data.put("date", arg0[1]);
+                data.put("role", arg0[2]);
+            }
+            if (arg0[2].equalsIgnoreCase("staff")){
+                data.put("staff_id", arg0[0]);
+                data.put("date", arg0[1]);
+                data.put("role", arg0[2]);
+
+            }
 
             PostingClass ruc = new PostingClass();
 
@@ -193,52 +222,58 @@ public class TrainerFragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.i("JSON", result);
-            try {
-                JSONArray jsonArray = new JSONArray(result);
-                for (int i = 0; i < jsonArray.length(); i++) {
+            if (result.equalsIgnoreCase("No pending available")) {
+                Toast.makeText(getContext(), "Sorry No pending available", Toast.LENGTH_LONG).show();
+            } else {
+                try {
+
+                    JSONArray jsonArray = new JSONArray(result);
+                    for (int i = 0; i < jsonArray.length(); i++) {
 
 
-                    JSONObject json = jsonArray.getJSONObject(i);
-                    Log.i("JSON OBJ", json.getString("app_id"));
+                        JSONObject json = jsonArray.getJSONObject(i);
+                        Log.i("JSON OBJ", json.getString("app_id"));
 
 
-                    app_id[i] = json.getString("app_id");
-                    staff_id[i] = json.getString("staff_id");
-                    company_id[i] = json.getString("company_id");
-                    call_loop_id[i] = json.getString("call_loop_id");
-                    date[i] = json.getString("date");
-                    remark[i]= json.getString("remark");
-                    fromDate[i] = json.getString("fromdate");
-                    toDate[i] = json.getString("todate");
-                    company_person[i] = json.getString("company_person");
-                    Post_remark[i] = json.getString("Post_remark");
-                    status[i] = json.getString("status");
-                    final_status[i] = json.getString("final_status");
-                    approval[i] = json.getString("approval");
-                    trainer_id[i] = json.getString("trainer_id");
-                    trainer_cnf[i] = json.getString("trainer_cnf");
-                    trainers[i] = json.getString("trainers");
-                    location[i] = json.getString("location");
-                    trainer_email[i] = json.getString("trainer_email");
-                    addedBy[i] = json.getString("added_by");
+                        app_id[i] = json.getString("app_id");
+                        staff_id[i] = json.getString("staff_id");
+                        company_id[i] = json.getString("company_id");
+                        call_loop_id[i] = json.getString("call_loop_id");
+                        date[i] = json.getString("date");
+                        remark[i] = json.getString("remark");
+                        fromDate[i] = json.getString("fromdate");
+                        toDate[i] = json.getString("todate");
+                        company_person[i] = json.getString("company_person");
+                        Post_remark[i] = json.getString("Post_remark");
+                        status[i] = json.getString("status");
+                        final_status[i] = json.getString("final_status");
+                        approval[i] = json.getString("approval");
+                        trainer_id[i] = json.getString("trainer_id");
+                        trainer_cnf[i] = json.getString("trainer_cnf");
+                        trainers[i] = json.getString("trainers");
+                        location[i] = json.getString("location");
+                        trainer_email[i] = json.getString("trainer_email");
+                        addedBy[i] = json.getString("added_by");
 
 
-                    loading.dismiss();
+//                        loading.dismiss();
 
-                    appointmentLists.add(new AppointmentList(app_id[i], date[i], staff_id[i], addedBy[i]));
+                        appointmentLists.add(new AppointmentList(app_id[i], date[i], staff_id[i], addedBy[i]));
 
-                    listView1 = getActivity().findViewById(R.id.listappt);
+                        listView1 = getActivity().findViewById(R.id.listappt);
 
-                    AppointmentListAdapter adapter = new AppointmentListAdapter(getContext(), R.layout.custom_programme_listview, appointmentLists);
+                        AppointmentListAdapter adapter = new AppointmentListAdapter(getContext(), R.layout.custom_programme_listview, appointmentLists);
 
-                    listView1.setAdapter(adapter);
+                        listView1.setAdapter(adapter);
 
 
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
+
     }
 
     class FetchProgram1 extends AsyncTask<String, String, String> {
@@ -247,15 +282,23 @@ public class TrainerFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(getContext(),"","Hold on.....",true,false);
+           // loading = ProgressDialog.show(getContext(),"","Hold on.....",true,true);
         }
 
         @Override
         protected String doInBackground(String... arg0) {
             HashMap<String, String> data = new HashMap<>();
-            data.put("staff_id", arg0[0]);
-            data.put("date", arg0[1]);
+            if(arg0[2].equalsIgnoreCase("trainer")) {
+                data.put("trainer_id", arg0[0]);
+                data.put("date", arg0[1]);
+                data.put("role", arg0[2]);
+            }
+            if (arg0[2].equalsIgnoreCase("staff")){
+                data.put("staff_id", arg0[0]);
+                data.put("date", arg0[1]);
+                data.put("role", arg0[2]);
 
+            }
             PostingClass ruc = new PostingClass();
 
             String result = ruc.sendPostRequest("https://bijatraining.000webhostapp.com/program_ret.php", data);
@@ -267,55 +310,56 @@ public class TrainerFragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.i("JSON", result);
-            try {
-                JSONArray jsonArray = new JSONArray(result);
-                for (int i = 0; i < jsonArray.length(); i++) {
+            if (result.equalsIgnoreCase("No pending available")) {
+                Toast.makeText(getContext(), "Sorry No pending available", Toast.LENGTH_LONG).show();
+            } else {
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    for (int i = 0; i < jsonArray.length(); i++) {
 
 
-
-                    JSONObject json = jsonArray.getJSONObject(i);
-                    Log.i("JSON OBJ", json.getString("prg_id"));
-
-
-                    prg_id1[i] = json.getString("prg_id");
-                    title1[i] = json.getString("title");
-                    trainer1[i] = json.getString("trainers");
-                    addedBy1[i] = json.getString("added_by");
-                    date1[i] = json.getString("date");
-                    remark1[i] = json.getString("remark");
-                    status1[i] = json.getString("trainer_cnf");;
-                    trainerEmai1[i] = json.getString("trainer_email");
-                    fromDate1[i] = json.getString("fromdate");
-                    toDate1[i] = json.getString("todate");
-                    companyPerson1[i] = json.getString("company_person");
-                    finalStatus1[i] = json.getString("final_status");
-                    approval1[i] = json.getString("approval");
-                    fees1[i] = json.getString("fees");
-                    paid1[i] = json.getString("paid");
-                    due1[i] = json.getString("due");
-                    location[i] = json.getString("location");
-                    paidOn1[i] = json.getString("t_paid_on");
+                        JSONObject json = jsonArray.getJSONObject(i);
+                        Log.i("JSON OBJ", json.getString("prg_id"));
 
 
+                        prg_id1[i] = json.getString("prg_id");
+                        title1[i] = json.getString("title");
+                        trainer1[i] = json.getString("trainers");
+                        addedBy1[i] = json.getString("added_by");
+                        date1[i] = json.getString("date");
+                        remark1[i] = json.getString("remark");
+                        status1[i] = json.getString("trainer_cnf");
+                        ;
+                        trainerEmai1[i] = json.getString("trainer_email");
+                        fromDate1[i] = json.getString("fromdate");
+                        toDate1[i] = json.getString("todate");
+                        companyPerson1[i] = json.getString("company_person");
+                        finalStatus1[i] = json.getString("final_status");
+                        approval1[i] = json.getString("approval");
+                        fees1[i] = json.getString("fees");
+                        paid1[i] = json.getString("paid");
+                        due1[i] = json.getString("due");
+                        location[i] = json.getString("location");
+                        paidOn1[i] = json.getString("t_paid_on");
 
 
-                    loading.dismiss();
+//                        loading.dismiss();
 
-                    programmeLists.add(new ProgrammeList(prg_id1[i], title1[i], trainer1[i], addedBy1[i]));
+                        programmeLists.add(new ProgrammeList(prg_id1[i], title1[i], trainer1[i], addedBy1[i]));
 
-                    listView2 = getActivity().findViewById(R.id.listprg);
+                        listView2 = getActivity().findViewById(R.id.listprg);
 
-                    ProgramListAdapter adapter = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
+                        ProgramListAdapter adapter = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
 
-                    listView2.setAdapter(adapter);
+                        listView2.setAdapter(adapter);
 
 
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
-
     }
 
 

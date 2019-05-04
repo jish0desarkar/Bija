@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,14 +27,28 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 import static android.view.View.GONE;
+import static android.view.View.resolveSize;
 
 public class LongPressPopUpActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -39,6 +56,10 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
     TimePickerDialog.OnTimeSetListener fromTimeListner, toTimeListner;
 
     String dateSetter;
+
+    static Handler UIHandler;
+
+    AutoCompleteTextView trainerEmailField;
 
 
     private Spinner spinner;
@@ -50,6 +71,21 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
             t_paidYear, t_paidMonth, t_paidDay, t_paidHour, t_paidMin, t_paidDayFinal, t_paidMonthFinal, t_paidYearFinal, t_paidHourFinal, t_paidMinFinal,
             flw_dateYear, flw_dateMonth, flw_dateDay, flw_dateHour, flw_dateMin, flw_dateDayFinal, flw_dateMonthFinal, flw_dateYearFinal, flw_dateHourFinal, flw_dateMinFinal;
     HashMap<String, String> data = new HashMap<>();
+
+    HashMap<Integer, String> trainerNameHash= new HashMap<>();
+
+    HashMap<Integer,String> trainerEmailHash = new HashMap<>();
+
+    ArrayList<String> Trainers = new ArrayList<>();
+
+    ArrayList<String> TrainerEmail = new ArrayList<>();
+
+    HashMap<Integer,String> trainerIDHash = new HashMap<>();
+
+    private static final String[] trainerNames = new String[1000];
+
+    AutoCompleteTextView trainersField;
+
 
     int eventType;
     String tag;
@@ -66,6 +102,12 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
         String formattedDate = df.format(c);
         Log.i("lastcalldate", formattedDate);
 
+        ArrayAdapter<String> suggestAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, trainerNames);
+
+
+        new fetchTrainer().execute();
+
 
         Button closeButton = findViewById(R.id.close_btn);
 
@@ -78,14 +120,17 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
         Button t_date_btn = findViewById(R.id.t_paid_date);
         float YY = t_date_btn.getY();
 
+            UIHandler = new Handler(Looper.getMainLooper());
+
         Button flwDateBtn = findViewById(R.id.flw_up_date);
 
         EditText titleField = findViewById(R.id.title_field);
         EditText postRemarkEdiText = findViewById(R.id.postremark_field);
         EditText trainerIDField = findViewById(R.id.trainer_id_field);
         EditText trainerCNFField = findViewById(R.id.trainer_cnf_field);
-        EditText trainersField = findViewById(R.id.trainers_field);
-        EditText trainerEmailField = findViewById(R.id.trainer_email_field);
+
+        trainersField = findViewById(R.id.trainers_field);
+        trainerEmailField = findViewById(R.id.trainer_email_field);
         EditText locationField = findViewById(R.id.location_field);
         EditText trainerFeesField = findViewById(R.id.trainer_fees_field);
         EditText feesField = findViewById(R.id.fees_field);
@@ -93,6 +138,8 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
         EditText invoiceField = findViewById(R.id.invoice_field);
         EditText t_feesField = findViewById(R.id.t_fee_field);
         EditText t_paidField = findViewById(R.id.t_paid_field);
+
+
 
 
         //FROM DATE BUTTON
@@ -210,6 +257,8 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                         trainerCNFField.setVisibility(View.VISIBLE);
                         trainerEmailField.setVisibility(View.VISIBLE);
                         trainersField.setVisibility(View.VISIBLE);
+
+                        trainersField.setAdapter(suggestAdapter);
                         locationField.setVisibility(View.VISIBLE);
                         fromDate.setVisibility(View.VISIBLE);
                         toDate.setVisibility(View.VISIBLE);
@@ -238,6 +287,8 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                         flwDateBtn.setY(700);
 
 
+
+                        trainersField.setAdapter(suggestAdapter);
                         fromDate.setVisibility(GONE);
                         toDate.setVisibility(GONE);
                         titleField.setVisibility(GONE);
@@ -267,6 +318,8 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                     case 2:
 
                         flwDateBtn.setVisibility(View.VISIBLE);
+
+                        trainersField.setAdapter(suggestAdapter);
                         flwDateBtn.setText("trainer dates");
                         flwDateBtn.setY(1065);
                         fromDate.setVisibility(View.VISIBLE);
@@ -1011,5 +1064,85 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                 Toast.makeText(getApplicationContext(), "Something went wrong, enter the values correcty or the database is down", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    class fetchTrainer extends  AsyncTask<String, String, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        public String doInBackground(String... strings) {
+            try {
+                JSONArray jsonArray = readJsonFromUrl("http://bijatraining.000webhostapp.com/trainer_ret.php");
+
+                for (int i = 0; i<jsonArray.length(); i++){
+
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    trainerNameHash.put(i, jsonObject.getString("name"));
+                    trainerEmailHash.put(i, jsonObject.getString("email"));
+                    trainerIDHash.put(i, jsonObject.getString("trainer_id"));
+                    trainerNames[i] = jsonObject.getString("name");
+                    Trainers.add(trainerNames[i]);
+                    TrainerEmail.add(jsonObject.getString("email"));
+
+                }
+
+                ArrayAdapter<String> suggestAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1, Trainers);
+                ArrayAdapter<String> suggestAdapterEmail = new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1, TrainerEmail);
+
+                    Log.w("trainer", Trainers.get(115));
+                    LongPressPopUpActivity.runOnUI(new Runnable() {
+                        public void run() {
+                            trainersField.setAdapter(suggestAdapter);
+                            trainerEmailField.setAdapter(suggestAdapterEmail);
+                        }
+                    });
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    public JSONArray readJsonFromUrl(String url) throws IOException, JSONException {
+        InputStream is = new URL(url).openStream();
+        try {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = readAll(rd);
+            JSONArray json = new JSONArray(jsonText);
+            return json;
+        } finally {
+            is.close();
+        }
+    }
+
+        public String readAll(Reader rd) throws IOException {
+            StringBuilder sb = new StringBuilder();
+            int cp;
+            while ((cp = rd.read()) != -1) {
+
+                sb.append((char) cp);
+            }
+            return sb.toString();
+        }
+
+    public static void runOnUI(Runnable runnable) {
+        UIHandler.post(runnable);
     }
 }
