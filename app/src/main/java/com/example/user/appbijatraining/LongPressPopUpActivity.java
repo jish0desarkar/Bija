@@ -110,7 +110,7 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                 android.R.layout.simple_list_item_1, trainerNames);
 
 
-        new fetchTrainer().execute();
+
 
 
         Button closeButton = findViewById(R.id.close_btn);
@@ -255,6 +255,8 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
 
                     case 0:
 
+                        new fetchTrainer().execute();
+
 
                         postRemarkEdiText.setVisibility(View.VISIBLE);
                        // trainerIDField.setVisibility(View.VISIBLE);
@@ -284,6 +286,8 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                         break;
 
                     case 1:
+
+                        new fetchTrainer().execute();
 
                         postRemarkEdiText.setVisibility(View.VISIBLE);
                         flwDateBtn.setVisibility(View.VISIBLE);
@@ -320,6 +324,8 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                         break;
 
                     case 2:
+
+                        new fetchTrainer().execute();
 
                         flwDateBtn.setVisibility(View.VISIBLE);
 
