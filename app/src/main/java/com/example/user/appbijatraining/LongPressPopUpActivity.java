@@ -84,7 +84,11 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
 
     private static final String[] trainerNames = new String[1000];
 
+    HashMap<String, String> nameEmail = new HashMap<>();
+    HashMap<String, String> nameID = new HashMap<>();
+
     AutoCompleteTextView trainersField;
+    EditText trainerIDField;
 
 
     int eventType;
@@ -126,7 +130,7 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
 
         EditText titleField = findViewById(R.id.title_field);
         EditText postRemarkEdiText = findViewById(R.id.postremark_field);
-        EditText trainerIDField = findViewById(R.id.trainer_id_field);
+        trainerIDField = findViewById(R.id.trainer_id_field);
         EditText trainerCNFField = findViewById(R.id.trainer_cnf_field);
 
         trainersField = findViewById(R.id.trainers_field);
@@ -253,9 +257,9 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
 
 
                         postRemarkEdiText.setVisibility(View.VISIBLE);
-                        trainerIDField.setVisibility(View.VISIBLE);
+                       // trainerIDField.setVisibility(View.VISIBLE);
                         trainerCNFField.setVisibility(View.VISIBLE);
-                        trainerEmailField.setVisibility(View.VISIBLE);
+                        //trainerEmailField.setVisibility(View.VISIBLE);
                         trainersField.setVisibility(View.VISIBLE);
 
                         trainersField.setAdapter(suggestAdapter);
@@ -334,9 +338,9 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
                         feesField.setVisibility(View.VISIBLE);
                         paidField.setVisibility(View.VISIBLE);
                         trainerCNFField.setVisibility(View.VISIBLE);
-                        trainerEmailField.setVisibility(View.VISIBLE);
+                       // trainerEmailField.setVisibility(View.VISIBLE);
                         trainerFeesField.setVisibility(View.VISIBLE);
-                        trainerIDField.setVisibility(View.VISIBLE);
+                       // trainerIDField.setVisibility(View.VISIBLE);
                         locationField.setVisibility(View.VISIBLE);
                         t_date_btn.setVisibility(View.VISIBLE);
                         t_feesField.setVisibility(View.VISIBLE);
@@ -1088,6 +1092,8 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
 
                     trainerNameHash.put(i, jsonObject.getString("name"));
                     trainerEmailHash.put(i, jsonObject.getString("email"));
+                    nameEmail.put( jsonObject.getString("name"),jsonObject.getString("email"));
+                    nameID.put(jsonObject.getString("name"),jsonObject.getString("trainer_id"));
                     trainerIDHash.put(i, jsonObject.getString("trainer_id"));
                     trainerNames[i] = jsonObject.getString("name");
                     Trainers.add(trainerNames[i]);
@@ -1097,14 +1103,28 @@ public class LongPressPopUpActivity extends AppCompatActivity implements DatePic
 
                 ArrayAdapter<String> suggestAdapter = new ArrayAdapter<String>(getApplicationContext(),
                         android.R.layout.simple_list_item_1, Trainers);
-                ArrayAdapter<String> suggestAdapterEmail = new ArrayAdapter<String>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, TrainerEmail);
+                /*ArrayAdapter<String> suggestAdapterEmail = new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1, TrainerEmail);*/
 
                     Log.w("trainer", Trainers.get(115));
                     LongPressPopUpActivity.runOnUI(new Runnable() {
                         public void run() {
                             trainersField.setAdapter(suggestAdapter);
-                            trainerEmailField.setAdapter(suggestAdapterEmail);
+                            trainersField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Log.w("Item", String.valueOf(parent.getItemAtPosition(position)));
+                                    Log.w("EMAIL", String.valueOf(nameEmail.get(String.valueOf(parent.getItemAtPosition(position)))));
+                                    trainerEmailField.setText(String.valueOf(nameEmail.get(String.valueOf(parent.getItemAtPosition(position)))));
+
+                                    Log.w("ID", String.valueOf(nameID.get(String.valueOf(parent.getItemAtPosition(position)))));
+                                    trainerIDField.setText(String.valueOf(nameID.get(String.valueOf(parent.getItemAtPosition(position)))));
+
+                                }
+                            });
+
+
+                            //trainerEmailField.setAdapter(suggestAdapterEmail);
                         }
                     });
 
