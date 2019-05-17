@@ -1,5 +1,6 @@
 package com.example.user.appbijatraining;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,16 +27,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class TrainerFragment extends Fragment {
+public class TrainerFragment extends Fragment  implements DatePickerDialog.OnDateSetListener {
     static List<AppointmentList> appointmentLists;
     static ListView listView1;
 
     public static Handler UIHandler;
+
+    Detail_Extracter detail_extracter;
+
+    String sendDate;
+
+    int fromDay, fromMonth, fromYear, finalfromDate, finalfromMonth, finalfromYear, extradate, extramonth, extrayear;
 
     String[] app_id = new String[30];
     String[] staff_id = new String[30];
@@ -59,6 +70,7 @@ public class TrainerFragment extends Fragment {
     static ArrayList<ProgrammeList> programmeLists;
     static ListView listView2;
     TextView staff_id1;
+    TextView dateText;
     String[] prg_id1 = new String[100];
     String[] title1 = new String[100];
     String[] trainer1 = new String[100];
@@ -97,22 +109,60 @@ public class TrainerFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
+        dateText = getActivity().findViewById(R.id.date_text);
+
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Home");
 
         appointmentLists = new ArrayList<>();
 
-        Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
-        if (detail_extracter.getRole().equalsIgnoreCase("trainer"))
 
-            new FetchProgram().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                fromDay = calendar.get(Calendar.DAY_OF_MONTH);
+                fromMonth = calendar.get(Calendar.MONTH);
+                fromYear = calendar.get(Calendar.YEAR);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        TrainerFragment.this, fromYear, fromMonth, fromDay);
+                datePickerDialog.show();
+            }
+        });
 
-        if (detail_extracter.getRole().equalsIgnoreCase("staff"))
-            new FetchProgram().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        java.util.Date cal = Calendar.getInstance().getTime();
+
+
+
+        sendDate = dateFormat.format(cal);
+
+        Log.d("senddate", sendDate);
+
+        dateText.setText(dateFormat.format(cal).toString());
+
+
+
+
+
+
+         detail_extracter = new Detail_Extracter(getContext());
+        if (detail_extracter.getRole().equalsIgnoreCase("trainer")) {
+
+            new FetchProgram().execute(detail_extracter.getId(), dateFormat.format(cal), detail_extracter.getRole());
+            new FetchProgram1().execute(detail_extracter.getId(), dateFormat.format(cal), detail_extracter.getRole());
+        }
+        if (detail_extracter.getRole().equalsIgnoreCase("staff")) {
+            new FetchProgram1().execute(detail_extracter.getId(),dateFormat.format(cal), detail_extracter.getRole());
+            new FetchProgram().execute(detail_extracter.getId(), dateFormat.format(cal), detail_extracter.getRole());
+        }
 
 
 
         listView1 = getActivity().findViewById(R.id.listappt);
+
+        listView1.setClickable(false);
 
         AppointmentListAdapter adapter = new AppointmentListAdapter(getContext(), R.layout.custom_appointment_list_item, appointmentLists);
 
@@ -121,17 +171,10 @@ public class TrainerFragment extends Fragment {
         programmeLists = new ArrayList<>();
 
 
-        if (detail_extracter.getRole().equalsIgnoreCase("trainer"))
-
-            new FetchProgram1().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
-
-        if (detail_extracter.getRole().equalsIgnoreCase("staff"))
-            new FetchProgram1().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
 
 
         listView2 = getActivity().findViewById(R.id.listprg);
-
-        Log.w("banu", detail_extracter.getId());
+        listView2.setClickable(false);
 
         ProgramListAdapter adapter1 = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
 
@@ -160,6 +203,12 @@ public class TrainerFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
                 bundle.putString("intent", "appt");
+
+                bundle.putString("date", String.valueOf(extradate));
+                bundle.putString("month", String.valueOf(extramonth+1));
+                bundle.putString("year", String.valueOf(extrayear));
+
+                bundle.putString("Date", sendDate);
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_container, fragment);
                 fragmentTransaction.addToBackStack(null);
@@ -175,6 +224,12 @@ public class TrainerFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
                 bundle.putString("intent", "prog");
+                Log.w("JJJFFJJJFF", String.valueOf(extrayear));
+                bundle.putString("date", String.valueOf(extradate));
+                bundle.putString("month", String.valueOf(extramonth+1));
+                bundle.putString("year", String.valueOf(extrayear));
+                Log.w("asdasdasd", sendDate);
+                bundle.putString("Date", sendDate);
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_container, fragment);
                 fragmentTransaction.addToBackStack(null);
@@ -186,14 +241,42 @@ public class TrainerFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+        finalfromDate = dayOfMonth;
+        finalfromMonth = month;
+        finalfromYear = year;
+        extradate=finalfromDate;
+        extramonth=finalfromMonth;
+        extrayear=finalfromYear;
+        sendDate = String.valueOf(finalfromYear)+"-"+String.valueOf(finalfromMonth+1)+"-"+String.valueOf(finalfromDate);
+        dateText.setText(String.valueOf(finalfromYear)+"-"+String.valueOf(finalfromMonth+1)+"-"+String.valueOf(finalfromDate));
+
+
+        if (detail_extracter.getRole().equalsIgnoreCase("trainer")) {
+
+            new FetchProgram().execute(detail_extracter.getId(), String.valueOf(finalfromYear) + "-" + String.valueOf(finalfromMonth + 1) + "-" + String.valueOf(finalfromDate), detail_extracter.getRole());
+            new FetchProgram1().execute(detail_extracter.getId(), String.valueOf(finalfromYear) + "-" + String.valueOf(finalfromMonth + 1) + "-" + String.valueOf(finalfromDate), detail_extracter.getRole());
+        }
+
+        if (detail_extracter.getRole().equalsIgnoreCase("staff")) {
+            new FetchProgram().execute(detail_extracter.getId(), String.valueOf(finalfromYear) + "-" + String.valueOf(finalfromMonth + 1) + "-" + String.valueOf(finalfromDate), detail_extracter.getRole());
+
+            new FetchProgram1().execute(detail_extracter.getId(), String.valueOf(finalfromYear) + "-" + String.valueOf(finalfromMonth + 1) + "-" + String.valueOf(finalfromDate), detail_extracter.getRole());
+        }
+    }
+
     class FetchProgram extends AsyncTask<String, String, String> {
 
         ProgressDialog loading;
 
         @Override
         protected void onPreExecute() {
+
+
+
             super.onPreExecute();
-           // loading = ProgressDialog.show(getContext(), "", "Hold on.....", true, true);
+            loading = ProgressDialog.show(getContext(), "", "Hold on.....", true, false);
         }
 
         @Override
@@ -220,10 +303,21 @@ public class TrainerFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+
+            AppointmentListAdapter adapter;
+            listView1 = getActivity().findViewById(R.id.listappt);
+            listView1.setClickable(false);
+            adapter = new AppointmentListAdapter(getContext(), R.layout.custom_programme_listview, appointmentLists);
+            adapter.clear();
+            appointmentLists.clear();
             super.onPostExecute(result);
+            appointmentLists.clear();
+            loading.dismiss();
+            listView1.setAdapter(adapter);
             Log.i("JSON", result);
             if (result.equalsIgnoreCase("No pending available")) {
-                Toast.makeText(getContext(), "Sorry No pending available", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Sorry No Appoiontment pending available", Toast.LENGTH_LONG).show();
+                appointmentLists.clear();
             } else {
                 try {
 
@@ -232,8 +326,6 @@ public class TrainerFragment extends Fragment {
 
 
                         JSONObject json = jsonArray.getJSONObject(i);
-                        Log.i("JSON OBJ", json.getString("app_id"));
-
 
                         app_id[i] = json.getString("app_id");
                         staff_id[i] = json.getString("staff_id");
@@ -258,16 +350,12 @@ public class TrainerFragment extends Fragment {
 
 //                        loading.dismiss();
 
+
                         appointmentLists.add(new AppointmentList(app_id[i], date[i], staff_id[i], addedBy[i]));
 
-                        listView1 = getActivity().findViewById(R.id.listappt);
-
-                        AppointmentListAdapter adapter = new AppointmentListAdapter(getContext(), R.layout.custom_programme_listview, appointmentLists);
-
-                        listView1.setAdapter(adapter);
-
-
                     }
+
+                    listView1.setAdapter(adapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -281,8 +369,11 @@ public class TrainerFragment extends Fragment {
         ProgressDialog loading;
         @Override
         protected void onPreExecute() {
+
+
+
             super.onPreExecute();
-           // loading = ProgressDialog.show(getContext(),"","Hold on.....",true,true);
+           loading = ProgressDialog.show(getContext(),"","Hold on.....",true,false);
         }
 
         @Override
@@ -309,9 +400,19 @@ public class TrainerFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Log.i("JSON", result);
+
+            loading.dismiss();
+            programmeLists.clear();
+            listView2 = getActivity().findViewById(R.id.listprg);
+            listView2.setClickable(false);
+            ProgramListAdapter adapter1 = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
+            adapter1.clear();
+            programmeLists.clear();
+            listView2.setAdapter(adapter1);
+
             if (result.equalsIgnoreCase("No pending available")) {
-                Toast.makeText(getContext(), "Sorry No pending available", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Sorry No Program available", Toast.LENGTH_LONG).show();
+                programmeLists.clear();
             } else {
                 try {
                     JSONArray jsonArray = new JSONArray(result);
@@ -319,7 +420,7 @@ public class TrainerFragment extends Fragment {
 
 
                         JSONObject json = jsonArray.getJSONObject(i);
-                        Log.i("JSON OBJ", json.getString("prg_id"));
+                        Log.i("JSON OBJProg", json.getString("prg_id"));
 
 
                         prg_id1[i] = json.getString("prg_id");
@@ -329,7 +430,6 @@ public class TrainerFragment extends Fragment {
                         date1[i] = json.getString("date");
                         remark1[i] = json.getString("remark");
                         status1[i] = json.getString("trainer_cnf");
-                        ;
                         trainerEmai1[i] = json.getString("trainer_email");
                         fromDate1[i] = json.getString("fromdate");
                         toDate1[i] = json.getString("todate");
@@ -345,16 +445,16 @@ public class TrainerFragment extends Fragment {
 
 //                        loading.dismiss();
 
+
+
                         programmeLists.add(new ProgrammeList(prg_id1[i], title1[i], trainer1[i], addedBy1[i]));
 
-                        listView2 = getActivity().findViewById(R.id.listprg);
 
-                        ProgramListAdapter adapter = new ProgramListAdapter(getContext(), R.layout.custom_programme_listview, programmeLists);
-
-                        listView2.setAdapter(adapter);
 
 
                     }
+
+                    listView2.setAdapter(adapter1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

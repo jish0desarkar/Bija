@@ -90,16 +90,17 @@ public class AppointmentsFragment extends Fragment {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        String strDate = simpleDateFormat.format(dateclass);
+        //String strDate = simpleDateFormat.format(dateclass);
 
-        Log.w("DATE", detail_extracter.getRole());
+        String strDate = getArguments().getString("Date");
+        Log.w("APPPPPPPT", strDate);
 
         if (detail_extracter.getRole().equalsIgnoreCase("trainer"))
 
             new FetchProgram().execute(detail_extracter.getId(), strDate, detail_extracter.getRole());
 
         if (detail_extracter.getRole().equalsIgnoreCase("staff"))
-            new FetchProgram().execute(detail_extracter.getId(), "2017-04-12", detail_extracter.getRole());
+            new FetchProgram().execute(detail_extracter.getId(), strDate, detail_extracter.getRole());
 
 
         listView = getActivity().findViewById(R.id.appointment_list);

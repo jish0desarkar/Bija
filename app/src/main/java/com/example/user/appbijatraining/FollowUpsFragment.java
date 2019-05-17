@@ -1,5 +1,6 @@
 package com.example.user.appbijatraining;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -29,7 +31,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class FollowUpsFragment extends Fragment {
+public class FollowUpsFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
 
     NavigationView navigationView;
     static List<FollowUpListy> followUpListies;
@@ -59,7 +61,11 @@ public class FollowUpsFragment extends Fragment {
     String[] paid= new String[30];
     String[] due =  new String[30];
     String[] paidOn= new String[30];
-    String[] location = new String[30];;
+    String[] location = new String[30];
+    Detail_Extracter detail_extracter;
+    String strDate;
+
+    int fromDay, fromMonth, fromYear, finalfromDate, finalfromMonth, finalfromYear;
 
     int countJSON, pos;
 
@@ -82,7 +88,7 @@ public class FollowUpsFragment extends Fragment {
 
         followUpListies = new ArrayList<>();
 
-        Detail_Extracter detail_extracter = new Detail_Extracter(getContext());
+        detail_extracter = new Detail_Extracter(getContext());
 
         Calendar calendar = Calendar.getInstance();
 
@@ -90,7 +96,7 @@ public class FollowUpsFragment extends Fragment {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        String strDate = simpleDateFormat.format(dateclass);
+        strDate = simpleDateFormat.format(dateclass);
 
         new FetchProgram().execute(detail_extracter.getId(), strDate);
 
@@ -162,6 +168,16 @@ public class FollowUpsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        finalfromDate = day;
+        finalfromMonth = month;
+        finalfromYear = year;
+        strDate = String.valueOf(finalfromYear)+"-"+String.valueOf(finalfromMonth+1)+"-"+String.valueOf(finalfromDate);
+        Log.d("follow", strDate);
+        new FetchProgram().execute(detail_extracter.getId(), strDate);
+    }
+
 
     class FetchProgram extends AsyncTask<String, String, String> {
 
@@ -196,12 +212,29 @@ public class FollowUpsFragment extends Fragment {
 
             loading.dismiss();
 
+
+            listView = getActivity().findViewById(R.id.followup_list);
+
+            FollowUpListAdapter adapter = new FollowUpListAdapter(getContext(), R.layout.custom_programme_listview, followUpListies);
+
+            listView.setAdapter(adapter);
+
+            followUpListies.clear();
+            adapter.clear();
+            listView.setAdapter(adapter);
+
             if(result.equalsIgnoreCase("No pending available")){
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("NO PENDING AVAILABLE")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Choose a Date", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // FIRE ZE MISSILES!
+                                Calendar calendar = Calendar.getInstance();
+                                fromDay = calendar.get(Calendar.DAY_OF_MONTH);
+                                fromMonth = calendar.get(Calendar.MONTH);
+                                fromYear = calendar.get(Calendar.YEAR);
+                                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                                        FollowUpsFragment.this, fromYear, fromMonth, fromDay);
+                                datePickerDialog.show();
                             }
                         });
                 builder.create().show();
@@ -240,18 +273,17 @@ public class FollowUpsFragment extends Fragment {
                     paidOn = json.getString("t_paid_on");*/
 
 
-                        loading.dismiss();
+
 
                         followUpListies.add(new FollowUpListy(flw_id[i], date[i], addedBy[i], finalStatus[i]));
 
-                        listView = getActivity().findViewById(R.id.followup_list);
-
-                        FollowUpListAdapter adapter = new FollowUpListAdapter(getContext(), R.layout.custom_programme_listview, followUpListies);
-
-                        listView.setAdapter(adapter);
+                        
 
 
                     }
+
+
+                    listView.setAdapter(adapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

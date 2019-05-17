@@ -82,7 +82,9 @@ public class ProgrammeFragment extends Fragment {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        String strDate = simpleDateFormat.format(dateclass);
+        String strDate = getArguments().getString("Date");
+        Log.w("Appppppp", strDate);
+
 
         if (detail_extracter.getRole().equalsIgnoreCase("trainer"))
 
